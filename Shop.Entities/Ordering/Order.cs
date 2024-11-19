@@ -1,4 +1,4 @@
-﻿using Shop.Entities.Accounts;
+﻿using Shop.Entities.Customer;
 
 namespace Shop.Entities.Ordering;
 

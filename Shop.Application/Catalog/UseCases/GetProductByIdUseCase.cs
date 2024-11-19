@@ -1,21 +1,25 @@
-﻿using Shop.Application.Interfaces;
+﻿using Shop.Application.Catalog.Specifications;
+using Shop.Application.Interfaces;
+using Shop.Entities.Catalog;
 
 namespace Shop.Application.Catalog.UseCases;
 
-public class GetProductByIdUseCase<T, TOutput>
+public class GetProductByIdUseCase<TOutput>
 {
-    private readonly IRepository<T> _productRepository;
-    private readonly IPresenter<T, TOutput> _presenter;
+    private readonly IRepository<Product> _productRepository;
+    private readonly IPresenter<Product, TOutput> _presenter;
 
-    public GetProductByIdUseCase(IRepository<T> productRepository, IPresenter<T, TOutput> presenter)
+    public GetProductByIdUseCase(IRepository<Product> productRepository, IPresenter<Product, TOutput> presenter)
     {
         _productRepository = productRepository;
         _presenter = presenter;
     }
 
-    public async Task<TOutput?> ExecuteAsync(string id)
+    public async Task<TOutput?> ExecuteAsync(string productCode)
     {
-        var product = await _productRepository.GetByString(id);
+        var spec = new CatalogProductSpecification(productCode);
+
+        var product = await _productRepository.GetEntityWithSpec(spec);
         return _presenter.Present(product);
     }
 }

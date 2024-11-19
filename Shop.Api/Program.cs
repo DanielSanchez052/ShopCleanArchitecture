@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Shop.Api.Apis.Http;
 using Shop.Api.Extensions;
 using Shop.Application.Catalog.UseCases;
 using Shop.Entities.Catalog;
@@ -38,20 +39,7 @@ if (args.Contains("/seed"))
     return;
 }
 
-app.MapGet("/product", async ([FromServices] GetProductsUseCase<Product, ProductViewModel> useCase) =>
-{
-    return await useCase.ExecuteAsync();
-})
-.WithName("GetProduct")
-.WithOpenApi();
-
-app.MapGet("/product/{id}", async ([FromServices] GetProductByIdUseCase<Product, ProductViewModel> useCase,[FromRoute] string id) =>
-{
-    return await useCase.ExecuteAsync(id);
-})
-.WithName("GetProductById")
-.WithOpenApi();
-
+app.MapCatalogApiV1();
 
 await app.RunAsync();
 

@@ -1,8 +1,10 @@
-﻿namespace Shop.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-public interface IWriteRepository<T>
+namespace Shop.Application.Interfaces;
+
+public interface IWriteRepository<T> where T : class
 {
-    Task<int> AddAsync(T entity);
-    Task<int> UpdateAsync(T entity);
-    Task<int> DeleteAsync(T entity);
+    ValueTask<EntityEntry<T>> AddAsync(T entity);
+    void Update(T entity);
+    void Delete(T entity);
 }

@@ -4,9 +4,9 @@ using Shop.Infrastructure.Persistence;
 
 namespace Shop.Infrastructure.Catalog.Repository;
 
-public class ProductRepository : BaseRepository<Product>, IRepository<Product>
+public class CategoryRepository : BaseRepository<Category>, IRepository<Category>
 {
-    public ProductRepository(IDbContext dbContext) : base(dbContext)
+    public CategoryRepository(IDbContext dbContext) : base(dbContext)
     {
     }
 }

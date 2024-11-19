@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shop.Entities.Accounts;
+using Shop.Application.Interfaces;
 using Shop.Entities.Catalog;
 using Shop.Entities.Config;
+using Shop.Entities.Customer;
 using Shop.Entities.Digital;
 using Shop.Entities.Ordering;
 
 namespace Shop.Infrastructure;
 
-public class AppDbContext : DbContext
+public class AppDbContext : DbContext, IDbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -28,6 +29,11 @@ public class AppDbContext : DbContext
     public DbSet<OrderStatus> OrderStatus { get; set; }
     public DbSet<OrderDetailStatus> OrderDetailStatus { get; set; }
     public DbSet<PaymentType> PaymentTypes { get; set; }
+
+    public new DbSet<TEntity> Set<TEntity>()
+       where TEntity : class
+       => base.Set<TEntity>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

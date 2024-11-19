@@ -1,7 +1,7 @@
 ﻿using Shop.Entities.Catalog;
 using Shop.Entities.Ordering;
 
-namespace Shop.Entities.Accounts;
+namespace Shop.Entities.Customer;
 
 public class Account
 {

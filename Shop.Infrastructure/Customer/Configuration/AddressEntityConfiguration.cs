@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shop.Entities.Ordering;
+using Shop.Entities.Customer;
 
 namespace Shop.Infrastructure.Customer.Configuration;
 

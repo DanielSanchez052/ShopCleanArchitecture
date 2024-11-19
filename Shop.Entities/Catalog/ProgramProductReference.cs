@@ -1,5 +1,4 @@
-﻿using Shop.Entities.Config;
-using Shop.Entities.Digital;
+﻿using Shop.Entities.Digital;
 using Shop.Entities.Ordering;
 
 namespace Shop.Entities.Catalog;

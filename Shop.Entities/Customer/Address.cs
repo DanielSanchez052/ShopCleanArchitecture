@@ -1,6 +1,6 @@
-﻿using Shop.Entities.Accounts;
+﻿using Shop.Entities.Ordering;
 
-namespace Shop.Entities.Ordering;
+namespace Shop.Entities.Customer;
 
 public class Address
 {
