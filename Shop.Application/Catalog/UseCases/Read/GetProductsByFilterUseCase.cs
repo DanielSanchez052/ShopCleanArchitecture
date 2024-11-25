@@ -3,7 +3,7 @@ using Shop.Application.Catalog.Specifications;
 using Shop.Application.Interfaces;
 using Shop.Entities.Catalog;
 
-namespace Shop.Application.Catalog.UseCases;
+namespace Shop.Application.Catalog.UseCases.Read;
 
 public class GetProductsByFilterUseCase<TOutput>
 {

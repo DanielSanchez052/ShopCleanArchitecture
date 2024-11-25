@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Azure.Core;
+using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application;
 using Shop.Application.Catalog;
-using Shop.Application.Catalog.UseCases;
+using Shop.Application.Catalog.UseCases.Read;
+using Shop.Application.Catalog.UseCases.Write;
+using Shop.Application.Primitives;
 using Shop.Entities.Catalog;
+using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Infrastructure.Catalog.ViewModel;
 
 namespace Shop.Api.Apis.Http;
@@ -19,6 +24,7 @@ public  static class CatalogApi
         catalogApi.MapGet("program-product/", GetProgramProducts);
         catalogApi.MapGet("program-product/{productCode}", GetProgramProductByCode);
         catalogApi.MapGet("category", GetCategories);
+        catalogApi.MapPost("program-product", AddProgramProduct);
 
         return app;
     }
@@ -90,5 +96,37 @@ public  static class CatalogApi
         }
 
         return TypedResults.NotFound();
+    }
+
+    public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddProgramProduct(
+       [FromServices] AddProductToProgramUseCase<AddProgramProductRequestDto> useCase,
+       [FromServices] IValidator<AddProgramProductRequestDto> validator,
+       [FromBody] AddProgramProductRequestDto product
+       )
+    {
+        if(product == null)
+        {
+            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
+        }
+
+        var result = await validator.ValidateAsync(product);
+        if (!result.IsValid)
+        {
+            Error[] errors = result.Errors
+                .Select(f => new Error(f.ErrorCode, f.ErrorMessage))
+                .Distinct()
+                .ToArray();
+
+            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "Validation error"), errors));
+        }
+
+        var creationResult = await useCase.ExecuteAsync(product);
+
+        if (creationResult.IsSuccess)
+        {
+            return TypedResults.Ok(creationResult.Value);
+        }
+
+        return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Shop.Application.Interfaces;
+using Shop.Application.Primitives.Maybe;
 
 namespace Shop.Infrastructure.Persistence;
 
@@ -32,26 +33,24 @@ public abstract class BaseRepository<T> :
         return await DbContext.Set<T>().ToListAsync();
     }
 
-    public async Task<T?> GetByInt(int id)
-    {
-         return await DbContext.Set<T>().FindAsync(id);
-    }
+    public async Task<Maybe<T>> GetByInt(int id)
+        => Maybe<T>.From(
+                await DbContext.Set<T>().FindAsync(id)
+             );
+            
+    
 
-    public async Task<T?> GetByString(string id)
-    {
-         return await DbContext.Set<T>().FindAsync(id);
-    }
+    public async Task<Maybe<T>> GetByString(string id)
+        => Maybe<T>.From(await DbContext.Set<T>().FindAsync(id));
+    
 
-    public async Task<T?> GetEntityWithSpec(ISpecification<T> spec)
-    {
-        return await ApplySpecification(spec).FirstOrDefaultAsync();
-
-    }
+    public async Task<Maybe<T>> GetEntityWithSpec(ISpecification<T> spec)
+        => Maybe<T>.From(await ApplySpecification(spec).FirstOrDefaultAsync());
+    
 
     public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
-    {
-        return await ApplySpecification(spec).ToListAsync();
-    }
+        => await ApplySpecification(spec).ToListAsync();
+    
 
     public void Update(T entity)
     {

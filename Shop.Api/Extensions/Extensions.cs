@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Application.Catalog.Specifications;
-using Shop.Application.Catalog.UseCases;
+using Shop.Application.Catalog.UseCases.Read;
+using Shop.Application.Catalog.UseCases.Write;
 using Shop.Application.Interfaces;
 using Shop.Entities.Catalog;
 using Shop.Entities.Config;
 using Shop.Infrastructure;
+using Shop.Infrastructure.Catalog.Dtos;
+using Shop.Infrastructure.Catalog.Mapper;
 using Shop.Infrastructure.Catalog.Presenter;
 using Shop.Infrastructure.Catalog.Repository;
 using Shop.Infrastructure.Catalog.ViewModel;
+using Shop.Infrastructure.Config.Repository;
 
 namespace Shop.Api.Extensions;
 
@@ -27,6 +31,7 @@ public static class Extensions
         app.Services.AddRepositories();
         app.Services.AddPresenters();
         app.Services.AddUseCases();
+        app.Services.AddMappers();
 
         return app;
     }
@@ -36,6 +41,7 @@ public static class Extensions
         services.AddScoped<IRepository<Product>, ProductRepository>(); 
         services.AddScoped<IRepository<ProgramProduct>, ProgramProductRepository>();
         services.AddScoped<IRepository<Category>, CategoryRepository>();
+        services.AddScoped<IRepository<Entities.Config.Program>, ProgramRepository>();
 
         return services;
     }
@@ -49,6 +55,13 @@ public static class Extensions
         return services;
     }
 
+    public static IServiceCollection AddMappers(this IServiceCollection services)
+    {
+        services.AddScoped<IMapper<AddProgramProductRequestDto, ProgramProduct>, ProgramProductMapper>();
+
+        return services;
+    }
+
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
         services.AddScoped<GetProductsByFilterUseCase<ProductViewModel>>();
@@ -56,6 +69,7 @@ public static class Extensions
         services.AddScoped<GetProgramProductsByFilterUseCase<ProgramProductViewModel>>();
         services.AddScoped<GetProgramProductsByCodeUseCase<ProgramProductViewModel>>();
         services.AddScoped<GetCategories<CategoryViewModel>>();
+        services.AddScoped<AddProductToProgramUseCase<AddProgramProductRequestDto>>();
 
         return services;
     }

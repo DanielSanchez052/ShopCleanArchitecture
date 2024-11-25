@@ -31,6 +31,8 @@ public class GetProgramProductSpecification : BaseSpecification<ProgramProduct>
         AddInclude(x => x.ProgramProductReferences);
         AddInclude(x => x.Category);
     }
+
+
 }
 
 
@@ -46,5 +48,19 @@ public class GetProgramProductSpecificationCount : BaseSpecification<ProgramProd
             && (!filters.ShowWithoutInventory && x.ProgramProductReferences.Any(x => x.Available > 0)))
             && x.IsActive)
     {
+    }
+
+}
+
+
+public class GetProductByGuidSpecification : BaseSpecification<ProgramProduct>
+{
+    public GetProductByGuidSpecification(string productGuid, int programId) : base(x => x.Product.Guid == productGuid && x.ProgramId == programId && x.IsActive)
+    {
+        AddInclude(x => x.Product);
+        AddInclude(x => x.Product.ProductType);
+        AddInclude(x => x.ProductImages);
+        AddInclude(x => x.ProgramProductReferences);
+        AddInclude(x => x.Category);
     }
 }

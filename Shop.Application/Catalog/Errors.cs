@@ -1,0 +1,18 @@
+﻿using Shop.Application.Primitives;
+
+namespace Shop.Application.Catalog;
+
+public partial class Errors
+{
+    public static class ProgramProduct
+    {
+        public static Error AlreadyExists = new Error("ProgramProduct.AlreadyExists", "Product already exists in program");
+        public static Error NotFound = new Error("ProgramProduct.NotFound", "Product specified not found in program");
+        public static Error CouldNotSave = new Error("ProgramProduct.CouldNotSave", "Product could not be saved");
+    }
+
+    public static class Product
+    {
+        public static Error NotFound = new Error("Product.NotFound", "Product specified not found");
+    }
+}
