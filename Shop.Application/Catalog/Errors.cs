@@ -14,5 +14,10 @@ public partial class Errors
     public static class Product
     {
         public static Error NotFound = new Error("Product.NotFound", "Product specified not found");
+        public static Error CouldNotSave = new Error("Program.CouldNotSave", "Product could not be saved");
+    }
+    public static class ProductType
+    {
+        public static Error NotFound = new Error("ProductType.NotFound", "Product type not found.");
     }
 }

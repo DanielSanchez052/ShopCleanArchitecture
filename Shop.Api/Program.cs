@@ -1,14 +1,10 @@
-using FluentValidation.AspNetCore;
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Options;
 using Shop.Api.Apis.Http;
 using Shop.Api.Extensions;
-using Shop.Application.Catalog.UseCases;
-using Shop.Entities.Catalog;
+using Shop.Application.Catalog.Validators;
 using Shop.Infrastructure;
-using Shop.Infrastructure.Catalog.ViewModel;
 using Shop.Infrastructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //validators
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddValidatorsFromAssemblyContaining<AddProgramProductValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 
@@ -40,7 +36,7 @@ if (args.Contains("/seed"))
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var settings = scope.ServiceProvider.GetRequiredService<IOptions<ShopSettings>>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<AppDbContextSeed>>();
-    
+
     logger.LogInformation("Applying migrations...");
     await new AppDbContextSeed().SeedAsync(context, settings, logger);
 

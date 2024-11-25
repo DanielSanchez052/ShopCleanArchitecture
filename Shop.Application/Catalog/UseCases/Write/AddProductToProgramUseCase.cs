@@ -37,11 +37,9 @@ public class AddProductToProgramUseCase<TDto>
         if (dto == null)
             throw new ArgumentNullException(nameof(dto));
 
-
-        var entity = _mapper.ToEntity(dto);
-
         try
         {
+            var entity = _mapper.ToEntity(dto);
             var programExists = await _programRepository.GetByInt(entity.ProgramId);
 
             if (programExists == null)

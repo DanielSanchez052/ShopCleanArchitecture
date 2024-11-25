@@ -39,6 +39,7 @@ public static class Extensions
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IRepository<Product>, ProductRepository>(); 
+        services.AddScoped<IRepository<ProductType>, ProductTypeRepository>();
         services.AddScoped<IRepository<ProgramProduct>, ProgramProductRepository>();
         services.AddScoped<IRepository<Category>, CategoryRepository>();
         services.AddScoped<IRepository<Entities.Config.Program>, ProgramRepository>();
@@ -58,6 +59,7 @@ public static class Extensions
     public static IServiceCollection AddMappers(this IServiceCollection services)
     {
         services.AddScoped<IMapper<AddProgramProductRequestDto, ProgramProduct>, ProgramProductMapper>();
+        services.AddScoped<IMapper<AddProductRequestDto, Product>,ProductMapper>();
 
         return services;
     }
@@ -70,6 +72,7 @@ public static class Extensions
         services.AddScoped<GetProgramProductsByCodeUseCase<ProgramProductViewModel>>();
         services.AddScoped<GetCategories<CategoryViewModel>>();
         services.AddScoped<AddProductToProgramUseCase<AddProgramProductRequestDto>>();
+        services.AddScoped<AddProductUseCase<AddProductRequestDto>>();
 
         return services;
     }

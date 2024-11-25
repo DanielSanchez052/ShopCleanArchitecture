@@ -21,10 +21,12 @@ public  static class CatalogApi
 
         catalogApi.MapGet("product/", GetProducts);
         catalogApi.MapGet("product/{id}", GetProductById);
+        catalogApi.MapPost("product", AddProduct);
         catalogApi.MapGet("program-product/", GetProgramProducts);
         catalogApi.MapGet("program-product/{productCode}", GetProgramProductByCode);
         catalogApi.MapGet("category", GetCategories);
         catalogApi.MapPost("program-product", AddProgramProduct);
+        
 
         return app;
     }
@@ -105,6 +107,38 @@ public  static class CatalogApi
        )
     {
         if(product == null)
+        {
+            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
+        }
+
+        var result = await validator.ValidateAsync(product);
+        if (!result.IsValid)
+        {
+            Error[] errors = result.Errors
+                .Select(f => new Error(f.ErrorCode, f.ErrorMessage))
+                .Distinct()
+                .ToArray();
+
+            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "Validation error"), errors));
+        }
+
+        var creationResult = await useCase.ExecuteAsync(product);
+
+        if (creationResult.IsSuccess)
+        {
+            return TypedResults.Ok(creationResult.Value);
+        }
+
+        return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
+    }
+
+    public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddProduct(
+      [FromServices] AddProductUseCase<AddProductRequestDto> useCase,
+      [FromServices] IValidator<AddProductRequestDto> validator,
+      [FromBody] AddProductRequestDto product
+      )
+    {
+        if (product == null)
         {
             return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
         }

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Shop.Infrastructure.Catalog.Dtos;
 
-namespace Shop.Api.Validators;
+namespace Shop.Application.Catalog.Validators;
 
 public class AddProgramProductValidator : AbstractValidator<AddProgramProductRequestDto>
 {
