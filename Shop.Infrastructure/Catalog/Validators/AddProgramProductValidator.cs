@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Shop.Infrastructure.Catalog.Dtos;
+using Shop.Infrastructure.Catalog.Validators;
 
 namespace Shop.Application.Catalog.Validators;
 
@@ -15,5 +16,6 @@ public class AddProgramProductValidator : AbstractValidator<AddProgramProductReq
         RuleFor(x => x.BasePrice).GreaterThan(0).WithMessage("Product Base Price must be greater than 0");
         RuleFor(x => x.Iva).GreaterThan(0).WithMessage("Product Base Iva be greater than 0");
         RuleFor(x => x.CategoryId).GreaterThan(0).WithMessage("Product category Iva be greater than 0");
+        RuleFor(x => x.ProductReferences).NotNull().ForEach(x => x.SetValidator(new AddProgramReferenceValidator()));
     }
 }

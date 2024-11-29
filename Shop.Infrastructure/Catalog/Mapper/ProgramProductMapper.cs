@@ -6,8 +6,16 @@ namespace Shop.Infrastructure.Catalog.Mapper;
 
 public class ProgramProductMapper : IMapper<AddProgramProductRequestDto, ProgramProduct>
 {
+    private readonly IMapper<AddProductReferenceRequestDto, ProgramProductReference> _referenceMapper;
+    public ProgramProductMapper(IMapper<AddProductReferenceRequestDto, ProgramProductReference> referenceMapper)
+    {
+        _referenceMapper = referenceMapper;
+    }
+
     public ProgramProduct ToEntity(AddProgramProductRequestDto dto)
-        => new ProgramProduct()
+    {
+
+        var programProduct = new ProgramProduct()
         {
             Guid = Guid.NewGuid().ToString(),
             ProgramId = dto.ProgramId,
@@ -24,6 +32,17 @@ public class ProgramProductMapper : IMapper<AddProgramProductRequestDto, Program
             CategoryId = dto.CategoryId,
             Iva = dto.Iva,
             BaseCost = dto.BaseCost,
-            IsActive = dto.IsActive
+            IsActive = dto.IsActive,
         };
+
+        if (dto.ProductReferences.Any())
+        {
+            var references = dto.ProductReferences.ConvertAll(_referenceMapper.ToEntity);
+            programProduct.AddReferences(references);
+        }
+
+        return programProduct;
+
+    }
+
 }

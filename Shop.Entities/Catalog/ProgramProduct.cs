@@ -55,8 +55,11 @@ public class ProgramProduct
     public virtual IReadOnlyCollection<ProgramProductReference> ProgramProductReferences => _programProductReferences;
 
     private readonly List<ProductImage> _productImages = new List<ProductImage>();
-
-
     public virtual IReadOnlyCollection<ProductImage> ProductImages => _productImages;
+
+    public void AddReferences(IEnumerable<ProgramProductReference> references)
+    {
+        _programProductReferences.AddRange(references);
+    }
 
 }

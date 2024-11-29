@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shop.Application.Catalog.Specifications;
 using Shop.Application.Catalog.UseCases.Read;
 using Shop.Application.Catalog.UseCases.Write;
 using Shop.Application.Interfaces;
 using Shop.Entities.Catalog;
-using Shop.Entities.Config;
 using Shop.Infrastructure;
 using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Infrastructure.Catalog.Mapper;
@@ -38,11 +36,12 @@ public static class Extensions
 
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IRepository<Product>, ProductRepository>(); 
+        services.AddScoped<IRepository<Product>, ProductRepository>();
         services.AddScoped<IRepository<ProductType>, ProductTypeRepository>();
         services.AddScoped<IRepository<ProgramProduct>, ProgramProductRepository>();
         services.AddScoped<IRepository<Category>, CategoryRepository>();
         services.AddScoped<IRepository<Entities.Config.Program>, ProgramRepository>();
+        services.AddScoped<IRepository<ProgramProductReference>, ProgramProductReferenceRepository>();
 
         return services;
     }
@@ -59,8 +58,8 @@ public static class Extensions
     public static IServiceCollection AddMappers(this IServiceCollection services)
     {
         services.AddScoped<IMapper<AddProgramProductRequestDto, ProgramProduct>, ProgramProductMapper>();
-        services.AddScoped<IMapper<AddProductRequestDto, Product>,ProductMapper>();
-
+        services.AddScoped<IMapper<AddProductRequestDto, Product>, ProductMapper>();
+        services.AddScoped<IMapper<AddProductReferenceRequestDto, ProgramProductReference>, ProgramProductReferenceMapper>();
         return services;
     }
 
@@ -73,7 +72,7 @@ public static class Extensions
         services.AddScoped<GetCategories<CategoryViewModel>>();
         services.AddScoped<AddProductToProgramUseCase<AddProgramProductRequestDto>>();
         services.AddScoped<AddProductUseCase<AddProductRequestDto>>();
-
+        services.AddScoped<AddProductReferenceUseCase<AddProductReferenceRequestDto>>();
         return services;
     }
 

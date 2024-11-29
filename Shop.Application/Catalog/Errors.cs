@@ -20,4 +20,9 @@ public partial class Errors
     {
         public static Error NotFound = new Error("ProductType.NotFound", "Product type not found.");
     }
+
+    public static class ProductReference
+    {
+        public static Error CouldNotSave = new Error("ProductReference.CouldNotSave", "Product referencecould not be saved.");
+    }
 }

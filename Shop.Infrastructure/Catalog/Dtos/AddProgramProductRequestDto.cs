@@ -17,5 +17,5 @@ public class AddProgramProductRequestDto
     public decimal Iva { get; set; }
     public decimal BaseCost { get; set; }
     public bool IsActive { get; set; }
-
+    public List<AddProductReferenceRequestDto> ProductReferences { get; set; }
 }
