@@ -40,9 +40,9 @@ public class AddProductToProgramUseCase<TDto>
         try
         {
             var entity = _mapper.ToEntity(dto);
-            var programExists = await _programRepository.GetByInt(entity.ProgramId);
 
-            if (programExists == null)
+            var programExists = await _programRepository.GetByInt(entity.ProgramId);
+            if (programExists.HasNoValue)
                 return Result.Failure<string>(Program.Errors.Program.NotFound);
 
             var productExists = await _productrepository.GetByString(entity.ProductGuid);

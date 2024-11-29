@@ -12,6 +12,7 @@ public class ProductPresenter : IPresenter<Product, ProductViewModel>
 
         return new ProductViewModel() 
         { 
+            ProductGuid = entity.Guid,
             ProductCode = entity.ProductCode,
             Name = entity.Name,
             ProductType = entity.ProductTypeId,

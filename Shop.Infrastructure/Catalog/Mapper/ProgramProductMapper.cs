@@ -37,6 +37,7 @@ public class ProgramProductMapper : IMapper<AddProgramProductRequestDto, Program
 
         if (dto.ProductReferences.Any())
         {
+            dto.ProductReferences.ForEach(x => x.ProgramProductGuid = programProduct.Guid);
             var references = dto.ProductReferences.ConvertAll(_referenceMapper.ToEntity);
             programProduct.AddReferences(references);
         }

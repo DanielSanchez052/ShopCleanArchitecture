@@ -20,7 +20,8 @@ public  static class CatalogApi
         var catalogApi = app.MapGroup("catalog");
 
         catalogApi.MapGet("product/", GetProducts);
-        catalogApi.MapGet("product/{id}", GetProductById);
+        catalogApi.MapGet("product-type/", GetProductTypes);
+        catalogApi.MapGet("product/{productCode}", GetProductById);
         catalogApi.MapPost("product", AddProduct);
         catalogApi.MapGet("program-product/", GetProgramProducts);
         catalogApi.MapGet("program-product/{productCode}", GetProgramProductByCode);
@@ -40,13 +41,21 @@ public  static class CatalogApi
         return TypedResults.Ok(products);
     }
 
-    public static async Task<Results<Ok<ProductViewModel>, NotFound>> GetProductById([FromServices] GetProductByIdUseCase<ProductViewModel> useCase, [FromRoute] string id)
+    public static async Task<Results<Ok<List<ProductTypeViewModel>>, NotFound>> GetProductTypes([FromServices] GetProductTypesUseCase<ProductTypeViewModel> useCase)
     {
-        var product = await useCase.ExecuteAsync(id);
+        var productTypes = await useCase.ExecuteAsync();
 
-        if (product != null)
+        return TypedResults.Ok(productTypes.ToList());
+    }
+
+
+    public static async Task<Results<Ok<ProductViewModel>, NotFound>> GetProductById([FromServices] GetProductByIdUseCase<ProductViewModel> useCase, [FromRoute] string productCode)
+    {
+        var product = await useCase.ExecuteAsync(productCode);
+
+        if (product.HasValue)
         {
-            return TypedResults.Ok(product);
+            return TypedResults.Ok(product.Value);
         }
 
         return TypedResults.NotFound();
@@ -93,9 +102,9 @@ public  static class CatalogApi
 
         var product = await useCase.ExecuteAsync(program, productCode);
 
-        if (product != null)
+        if (product.HasValue)
         {
-            return TypedResults.Ok(product);
+            return TypedResults.Ok(product.Value);
         }
 
         return TypedResults.NotFound();

@@ -51,6 +51,7 @@ public static class Extensions
         services.AddScoped<IPresenter<Product, ProductViewModel>, ProductPresenter>();
         services.AddScoped<IPresenter<ProgramProduct, ProgramProductViewModel>, ProgramProductPresenter>();
         services.AddScoped<IPresenter<Category, CategoryViewModel>, CategoryPresenter>();
+        services.AddScoped<IPresenter<ProductType, ProductTypeViewModel>, ProductTypePresenter>();
 
         return services;
     }
@@ -70,6 +71,7 @@ public static class Extensions
         services.AddScoped<GetProgramProductsByFilterUseCase<ProgramProductViewModel>>();
         services.AddScoped<GetProgramProductsByCodeUseCase<ProgramProductViewModel>>();
         services.AddScoped<GetCategories<CategoryViewModel>>();
+        services.AddScoped<GetProductTypesUseCase<ProductTypeViewModel>>();
         services.AddScoped<AddProductToProgramUseCase<AddProgramProductRequestDto>>();
         services.AddScoped<AddProductUseCase<AddProductRequestDto>>();
         services.AddScoped<AddProductReferenceUseCase<AddProductReferenceRequestDto>>();

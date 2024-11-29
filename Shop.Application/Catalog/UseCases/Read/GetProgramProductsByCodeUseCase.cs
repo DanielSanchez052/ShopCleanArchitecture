@@ -1,5 +1,6 @@
 ﻿using Shop.Application.Catalog.Specifications;
 using Shop.Application.Interfaces;
+using Shop.Application.Primitives.Maybe;
 using Shop.Entities.Catalog;
 
 namespace Shop.Application.Catalog.UseCases.Read;
@@ -15,12 +16,16 @@ public class GetProgramProductsByCodeUseCase<TOutput>
         _presenter = presenter;
     }
 
-    public async Task<TOutput?> ExecuteAsync(int programId, string productCode)
+    public async Task<Maybe<TOutput>> ExecuteAsync(int programId, string productCode)
     {
         var spec = new GetProgramProductSpecification(programId, productCode);
 
         var products = await _productRepository.GetEntityWithSpec(spec);
-
-        return _presenter.Present(products);
+        if (products.HasNoValue)
+        {
+            return Maybe<TOutput>.None;
+        }
+    
+        return Maybe<TOutput>.From(_presenter.Present(products));
     }
 }

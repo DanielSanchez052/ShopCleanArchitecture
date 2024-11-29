@@ -9,6 +9,7 @@ public class ProgramProductReferenceMapper : IMapper<AddProductReferenceRequestD
     public ProgramProductReference ToEntity(AddProductReferenceRequestDto dto)
      => new ProgramProductReference()
      {
+         Guid = Guid.NewGuid().ToString(),
          ProgramProductGuid = dto.ProgramProductGuid,
          Inventory = dto.Inventory,
          Available = dto.Available,

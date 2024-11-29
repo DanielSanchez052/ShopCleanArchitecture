@@ -2,6 +2,7 @@
 
 public class ProductViewModel
 {
+    public string ProductGuid { get; set; }
     public string ProductCode { get; set; } = null!;
     public string Name { get; set; } = null!;
     public int ProductType { get; set; }
