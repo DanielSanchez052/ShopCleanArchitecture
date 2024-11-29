@@ -16,6 +16,18 @@ public class ProgramProductReferenceEntityConfiguration : IEntityTypeConfigurati
             .IsRequired()
             .HasMaxLength(36);
 
+        builder.Property(x => x.Name)
+            .IsRequired()
+            .HasMaxLength(155);
+
+        builder.Property(x => x.Description)
+            .IsRequired(false)
+            .HasMaxLength(255);
+
+        builder.Property(x => x.AditionalData)
+            .IsRequired(false)
+            .HasMaxLength(500);
+
         builder.HasOne(x => x.ProgramProduct)
             .WithMany(x => x.ProgramProductReferences)
             .HasForeignKey(x => x.ProgramProductGuid);

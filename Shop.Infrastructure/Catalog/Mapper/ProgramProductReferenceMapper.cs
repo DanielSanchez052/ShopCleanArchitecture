@@ -11,6 +11,9 @@ public class ProgramProductReferenceMapper : IMapper<AddProductReferenceRequestD
      {
          Guid = Guid.NewGuid().ToString(),
          ProgramProductGuid = dto.ProgramProductGuid,
+         Name = dto.Name,
+         Description = dto.Description,
+         AditionalData = dto.AditionalData,
          Inventory = dto.Inventory,
          Available = dto.Available,
          IsActive = dto.IsActive,

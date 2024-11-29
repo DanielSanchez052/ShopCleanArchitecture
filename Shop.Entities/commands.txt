@@ -1,0 +1,4 @@
+dotnet -> dotnet ef migrations add <NombreMigracion> -p MoneyManage.Persistence -s MoneyManage.API -v
+
+dotnet -> dotnet ef database update -s MoneyManage.API -p MoneyManage.Persistence -v
+Visual Studio -> Update-Database

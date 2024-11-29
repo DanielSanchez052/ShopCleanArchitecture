@@ -13,7 +13,7 @@ using Shop.Infrastructure.Catalog.ViewModel;
 
 namespace Shop.Api.Apis.Http;
 
-public  static class CatalogApi
+public static class CatalogApi
 {
     public static IEndpointRouteBuilder MapCatalogApiV1(this IEndpointRouteBuilder app)
     {

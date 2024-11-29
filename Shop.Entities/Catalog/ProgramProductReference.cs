@@ -19,6 +19,9 @@ public class ProgramProductReference
     }
 
     public string Guid { get; set; } = null!;
+    public string Name { get; set; } = null!;
+    public string? Description { get; set; }
+    public string? AditionalData { get; set; }
     public string ProgramProductGuid { get; set; } = null!;
     public ProgramProduct ProgramProduct { get; set; } = null!;
     public int Inventory { get; set; }

@@ -29,6 +29,9 @@ public class ProgramProductPresenter : IPresenter<ProgramProduct, ProgramProduct
             References = entity.ProgramProductReferences.Select(s => new ProductReferenceViewModel()
             {
                 Guid = s.Guid,
+                Name = s.Name,
+                Description = s.Description,
+                AditionalData = s.AditionalData,
                 Available = s.Available,
                 Inventory = s.Inventory,
             }).ToList(),
