@@ -48,6 +48,8 @@ public class AddressEntityConfiguration : IEntityTypeConfiguration<Address>
             .IsRequired(false)
             .HasMaxLength(256);
 
+        builder.Property(x => x.RawValue).HasMaxLength(256);
+
         builder.Property(x => x.IsDefault)
             .IsRequired();
 

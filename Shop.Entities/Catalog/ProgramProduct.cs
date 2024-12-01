@@ -62,4 +62,13 @@ public class ProgramProduct
         _programProductReferences.AddRange(references);
     }
 
+    public void AddImages(IEnumerable<ProductImage> images)
+    {
+        _productImages.AddRange(images);
+    }
+
+    public void AddImage (ProductImage image)
+    {
+        _productImages.Add(image);
+    }
 }
