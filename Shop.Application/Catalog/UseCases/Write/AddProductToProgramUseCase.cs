@@ -55,6 +55,19 @@ public class AddProductToProgramUseCase<TDto>
             if (programProductExists > 0)
                 return Result.Failure<string>(Errors.ProgramProduct.AlreadyExists);
 
+            if(productExists.HasValue && !string.IsNullOrEmpty(productExists.Value?.ImageUrl))
+            {
+                entity.AddImage(new ProductImage()
+                {
+                    Guid = Guid.NewGuid().ToString(),
+                    Name = "Default",
+                    ImageUrl = productExists.Value.ImageUrl,
+                    BaseUrl = string.Empty,
+                    IsSmall = false,
+                    IsActive = true,
+                    ProductGuid = entity.ProductGuid
+                });
+            }
 
             await _repository.AddAsync(entity);
             int result = await _context.SaveChangesAsync();
