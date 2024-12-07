@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Application.Account;
 using Shop.Application.Account.UseCases.Read;
 using Shop.Application.Account.UseCases.Write;
 using Shop.Application.Primitives;
@@ -17,6 +18,7 @@ public static class AccountApi
 
         accountApi.MapPost("account", AddAccount);
         accountApi.MapGet("account/{accountId}", GetAccountById);
+        accountApi.MapPost("account/{accountId}/address", AddAddress);
 
         return app;
     }
@@ -45,6 +47,32 @@ public static class AccountApi
         }
 
         var creationResult = await useCase.ExecuteAsync(account);
+
+        if (creationResult.IsSuccess)
+        {
+            return TypedResults.Ok(creationResult.Value);
+        }
+
+        return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
+    }
+
+    public static async Task<Results<Ok<int>, BadRequest<ApiErrorResponse>>> AddAddress(
+       [FromServices] AddAddressUseCase<AddressModel> useCase,
+       [FromBody] AddressModel address,
+       [FromRoute] string accountId
+       )
+    {
+        if (address == null)
+        {
+            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
+        }
+
+        if (string.IsNullOrEmpty(address.RawValue) && string.IsNullOrEmpty(address.Street) && string.IsNullOrEmpty(address.City) && string.IsNullOrEmpty(address.HouseNumber))
+        {
+            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "Validation error"), [Errors.Address.Empty]));
+        }
+
+        var creationResult = await useCase.ExecuteAsync(address, accountId);
 
         if (creationResult.IsSuccess)
         {

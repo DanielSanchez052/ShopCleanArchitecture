@@ -75,6 +75,7 @@ public static class Extensions
         services.AddScoped<IMapper<AddProductRequestDto, Product>, ProductMapper>();
         services.AddScoped<IMapper<AddProductReferenceRequestDto, ProgramProductReference>, ProgramProductReferenceMapper>();
         services.AddScoped<IMapper<AddAccountRequestDto, Account>, AccountMapper>();
+        services.AddScoped<IMapper<AddressModel, Address>, AddressMapper>();
         return services;
     }
 

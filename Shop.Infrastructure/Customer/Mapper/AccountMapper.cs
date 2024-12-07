@@ -8,10 +8,12 @@ namespace Shop.Infrastructure.Customer.Mapper;
 public class AccountMapper : IMapper<AddAccountRequestDto, Account>
 {
     private readonly IEncryptionService _encryptionService;
+    private readonly IMapper<AddressModel, Address> _addressMapper;
 
-    public AccountMapper(IEncryptionService encryptionService)
+    public AccountMapper(IEncryptionService encryptionService, IMapper<AddressModel, Address> addressMapper)
     {
         _encryptionService = encryptionService;
+        _addressMapper = addressMapper;
     }
 
     public Account ToEntity(AddAccountRequestDto dto)
@@ -32,19 +34,7 @@ public class AccountMapper : IMapper<AddAccountRequestDto, Account>
 
         if (dto.Addresses.Any())
         {
-            account.AddAdresses(dto.Addresses.Select(dto => new Address()
-            {
-                AccountGuid = account.Guid,
-                Street = dto.Street,
-                City = dto.City,
-                Country = dto.Country,
-                HouseNumber = dto.HouseNumber,
-                IsActive = dto.IsActive,
-                IsDefault = dto.IsDefault,
-                RawValue = dto.RawValue,
-                State = dto.State,
-                ZipCode = dto.ZipCode
-            }));
+            account.AddAdresses(dto.Addresses.Select(_addressMapper.ToEntity).ToList());
         }
         return account;
     }
