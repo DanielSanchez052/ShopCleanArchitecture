@@ -95,6 +95,7 @@ public static class Extensions
         //Account
         services.AddScoped<AddAccountUseCase<AddAccountRequestDto>>();
         services.AddScoped<GetAccountUseCase<AccountViewModel>>();
+        services.AddScoped<AddAddressUseCase<AddressModel>>();
         return services;
     }
 

@@ -1,4 +1,5 @@
-﻿using Shop.Application.Interfaces;
+﻿using Shop.Application.Account.Specifications;
+using Shop.Application.Interfaces;
 using Shop.Application.Primitives.Maybe;
 using Shop.Application.Primitives.Result;
 
@@ -20,7 +21,8 @@ public class GetAccountUseCase<TOutput>
         if (string.IsNullOrEmpty(accountId)) 
             throw new ArgumentNullException(nameof(accountId));
 
-        var account = await _repository.GetByString(accountId);
+        var spec= new GetAccountByIdSpecification(accountId);
+        var account = await _repository.GetEntityWithSpec(spec);
 
         if(account == null || account.HasNoValue)
         {
