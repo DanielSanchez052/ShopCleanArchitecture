@@ -1,9 +1,11 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Application.Account.UseCases.Read;
 using Shop.Application.Account.UseCases.Write;
 using Shop.Application.Primitives;
 using Shop.Infrastructure.Customer.Dtos;
+using Shop.Infrastructure.Customer.ViewModel;
 
 namespace Shop.Api.Apis.Http;
 
@@ -14,7 +16,7 @@ public static class AccountApi
         var accountApi = app.MapGroup("account");
 
         accountApi.MapPost("account", AddAccount);
-
+        accountApi.MapGet("account/{accountId}", GetAccountById);
 
         return app;
     }
@@ -51,4 +53,17 @@ public static class AccountApi
 
         return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
     }
+
+    public static async Task<Results<Ok<AccountViewModel>, NotFound>> GetAccountById([FromServices] GetAccountUseCase<AccountViewModel> useCase, [FromRoute] string accountId)
+    {
+        var account = await useCase.ExecuteAsync(accountId);
+
+        if (account.HasValue)
+        {
+            return TypedResults.Ok(account.Value);
+        }
+
+        return TypedResults.NotFound();
+    }
+
 }

@@ -29,7 +29,7 @@ public class AddAccountUseCase<TDto>
         try
         {
             var errors = new List<Error>();
-            var entity = _mapper.ToEntity(dto);
+            var entity = _mapper.ToEntity(dto) ;
 
             var account = await _repository.GetByString(entity.Guid);
             //if exists create if not update

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shop.Application.Account.UseCases.Read;
 using Shop.Application.Account.UseCases.Write;
 using Shop.Application.Catalog.UseCases.Read;
 using Shop.Application.Catalog.UseCases.Write;
@@ -15,7 +16,9 @@ using Shop.Infrastructure.Catalog.ViewModel;
 using Shop.Infrastructure.Config.Repository;
 using Shop.Infrastructure.Customer.Dtos;
 using Shop.Infrastructure.Customer.Mapper;
+using Shop.Infrastructure.Customer.Presenter;
 using Shop.Infrastructure.Customer.Repository;
+using Shop.Infrastructure.Customer.ViewModel;
 using Shop.Infrastructure.Security.Services;
 
 namespace Shop.Api.Extensions;
@@ -62,6 +65,7 @@ public static class Extensions
         services.AddScoped<IPresenter<Category, CategoryViewModel>, CategoryPresenter>();
         services.AddScoped<IPresenter<ProductType, ProductTypeViewModel>, ProductTypePresenter>();
 
+        services.AddScoped<IPresenter<Account, AccountViewModel>, AccountPresenter>();
         return services;
     }
 
@@ -89,6 +93,7 @@ public static class Extensions
 
         //Account
         services.AddScoped<AddAccountUseCase<AddAccountRequestDto>>();
+        services.AddScoped<GetAccountUseCase<AccountViewModel>>();
         return services;
     }
 

@@ -15,7 +15,6 @@ public class Account
     public string? Email { get; set; }
     public DateTime CreateDate { get; set; }
     public bool IsActive { get; set; }
-
     public virtual IReadOnlyCollection<Address> Addresses => _addresses;
     public virtual IReadOnlyCollection<Order> Orders => _orders;
 
