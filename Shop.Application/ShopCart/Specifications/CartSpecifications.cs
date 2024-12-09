@@ -13,7 +13,7 @@ public class GetCartByIdSpec : BaseSpecification<Cart>
 
 public class GetCartsActiveSpec : BaseSpecification<Cart>
 {
-    public GetCartsActiveSpec() : base(x => x.IsActive)
+    public GetCartsActiveSpec(string accountGuid) : base(x => x.AccountGuid == accountGuid && x.IsActive)
     {
     }
 }

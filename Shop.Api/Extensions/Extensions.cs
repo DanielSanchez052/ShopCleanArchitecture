@@ -5,6 +5,7 @@ using Shop.Application.Catalog.UseCases.Read;
 using Shop.Application.Catalog.UseCases.Write;
 using Shop.Application.Interfaces;
 using Shop.Application.Security.Services;
+using Shop.Application.ShopCart.UseCases.Read;
 using Shop.Application.ShopCart.UseCases.Write;
 using Shop.Entities.Catalog;
 using Shop.Entities.Customer;
@@ -110,6 +111,8 @@ public static class Extensions
 
         //Cart
         services.AddScoped<CreateCartUseCase<CartDto>>();
+        services.AddScoped<GetActiveCartsUseCase<CartViewModel>>();
+        services.AddScoped<GetCartByGuidUseCase<CartViewModel>>();
         return services;
     }
 
