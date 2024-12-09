@@ -45,10 +45,10 @@ public class OrderDetailEntityConfiguration : IEntityTypeConfiguration<OrderDeta
         builder.Property(x => x.Quantity)
             .IsRequired();
 
-        builder.Property(x => x.UnitPrice)
+        builder.Property(x => x.UnitPrice).HasPrecision(18, 2)
            .IsRequired();
 
-        builder.Property(x => x.Discount)
+        builder.Property(x => x.Discount).HasPrecision(18, 2)
            .IsRequired();
 
         builder.Property(x => x.CreateDate)

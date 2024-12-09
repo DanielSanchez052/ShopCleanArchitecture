@@ -37,9 +37,7 @@ public abstract class BaseRepository<T> :
         => Maybe<T>.From(
                 await DbContext.Set<T>().FindAsync(id)
              );
-            
-    
-
+ 
     public async Task<Maybe<T>> GetByString(string id)
         => Maybe<T>.From(await DbContext.Set<T>().FindAsync(id));
     
@@ -51,6 +49,8 @@ public abstract class BaseRepository<T> :
     public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
         => await ApplySpecification(spec).ToListAsync();
     
+    public async Task<int> DeleteBySpecificationAsync(ISpecification<T> spec)
+        => await ApplySpecification(spec).ExecuteDeleteAsync();
 
     public void Update(T entity)
     {

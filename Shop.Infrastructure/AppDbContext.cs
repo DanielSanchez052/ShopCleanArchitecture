@@ -5,6 +5,7 @@ using Shop.Entities.Config;
 using Shop.Entities.Customer;
 using Shop.Entities.Digital;
 using Shop.Entities.Ordering;
+using Shop.Entities.ShopCart;
 
 namespace Shop.Infrastructure;
 
@@ -17,6 +18,8 @@ public class AppDbContext : DbContext, IDbContext
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<ProductType> ProductTypes { get; set; }
     public DbSet<ProgramProduct> ProgramProducts { get; set; }

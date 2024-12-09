@@ -5,8 +5,10 @@ using Shop.Application.Catalog.UseCases.Read;
 using Shop.Application.Catalog.UseCases.Write;
 using Shop.Application.Interfaces;
 using Shop.Application.Security.Services;
+using Shop.Application.ShopCart.UseCases.Write;
 using Shop.Entities.Catalog;
 using Shop.Entities.Customer;
+using Shop.Entities.ShopCart;
 using Shop.Infrastructure;
 using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Infrastructure.Catalog.Mapper;
@@ -20,6 +22,11 @@ using Shop.Infrastructure.Customer.Presenter;
 using Shop.Infrastructure.Customer.Repository;
 using Shop.Infrastructure.Customer.ViewModel;
 using Shop.Infrastructure.Security.Services;
+using Shop.Infrastructure.ShopCart.Dtos;
+using Shop.Infrastructure.ShopCart.Mapper;
+using Shop.Infrastructure.ShopCart.Presenter;
+using Shop.Infrastructure.ShopCart.Repository;
+using Shop.Infrastructure.ShopCart.ViewModel;
 
 namespace Shop.Api.Extensions;
 
@@ -54,6 +61,7 @@ public static class Extensions
         services.AddScoped<IRepository<Entities.Config.Program>, ProgramRepository>();
         services.AddScoped<IRepository<ProgramProductReference>, ProgramProductReferenceRepository>();
         services.AddScoped<IRepository<Account>, AccountRepository>();
+        services.AddScoped<IRepository<Cart>, CartRepository>();
 
         return services;
     }
@@ -66,6 +74,7 @@ public static class Extensions
         services.AddScoped<IPresenter<ProductType, ProductTypeViewModel>, ProductTypePresenter>();
 
         services.AddScoped<IPresenter<Account, AccountViewModel>, AccountPresenter>();
+        services.AddScoped<IPresenter<Cart, CartViewModel>, CartPresenter>();
         return services;
     }
 
@@ -76,6 +85,8 @@ public static class Extensions
         services.AddScoped<IMapper<AddProductReferenceRequestDto, ProgramProductReference>, ProgramProductReferenceMapper>();
         services.AddScoped<IMapper<AddAccountRequestDto, Account>, AccountMapper>();
         services.AddScoped<IMapper<AddressModel, Address>, AddressMapper>();
+        services.AddScoped<IMapper<CartItemDto, CartItem>, CartItemMapper>();
+        services.AddScoped<IMapper<CartDto, Cart>, CartMapper>();
         return services;
     }
 
@@ -96,6 +107,9 @@ public static class Extensions
         services.AddScoped<AddAccountUseCase<AddAccountRequestDto>>();
         services.AddScoped<GetAccountUseCase<AccountViewModel>>();
         services.AddScoped<AddAddressUseCase<AddressModel>>();
+
+        //Cart
+        services.AddScoped<CreateCartUseCase<CartDto>>();
         return services;
     }
 

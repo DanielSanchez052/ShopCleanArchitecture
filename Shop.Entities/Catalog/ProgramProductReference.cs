@@ -1,5 +1,6 @@
 ﻿using Shop.Entities.Digital;
 using Shop.Entities.Ordering;
+using Shop.Entities.ShopCart;
 
 namespace Shop.Entities.Catalog;
 
@@ -33,4 +34,7 @@ public class ProgramProductReference
 
     private readonly List<Code> _codes = new List<Code>();
     public virtual IReadOnlyCollection<Code> Codes => _codes;
+
+    private readonly List<CartItem> _items = new List<CartItem>();
+    public virtual IReadOnlyCollection<CartItem> Items => _items;
 }

@@ -7,5 +7,6 @@ public class Schemas
     public const string Digital = "digital";
     public const string Ordering = "ordering";
     public const string Customer = "customer";
+    public const string ShopCart = "Cart";
 
 }

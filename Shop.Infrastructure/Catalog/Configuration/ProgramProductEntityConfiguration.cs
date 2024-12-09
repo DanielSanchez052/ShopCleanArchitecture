@@ -62,12 +62,15 @@ public class ProgramProductEntityConfiguration : IEntityTypeConfiguration<Progra
             .HasMaxLength(255);
 
         builder.Property(x => x.BasePrice)
+            .HasPrecision(18, 2)
             .IsRequired();
 
         builder.Property(x => x.Iva)
+            .HasPrecision(18, 2)
             .IsRequired();
 
         builder.Property(x => x.BaseCost)
+            .HasPrecision(18, 2)
             .IsRequired();
 
         builder.Property(a => a.CategoryId)

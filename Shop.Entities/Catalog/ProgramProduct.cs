@@ -30,6 +30,7 @@ public class ProgramProduct
     {
     }
 
+
     public string Guid { get; set; } = null!;
     public string ProductGuid { get; set; } = null!;
     public Product Product { get; set; } = null!;

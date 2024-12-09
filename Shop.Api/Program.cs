@@ -45,6 +45,7 @@ if (args.Contains("/seed"))
 
 app.MapCatalogApiV1();
 app.MapAccountApiV1();
+app.MapCartApiV1();
 
 await app.RunAsync();
 

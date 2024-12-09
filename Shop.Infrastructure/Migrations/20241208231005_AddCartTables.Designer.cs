@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure;
 
@@ -11,9 +12,11 @@ using Shop.Infrastructure;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208231005_AddCartTables")]
+    partial class AddCartTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,11 +194,9 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("nvarchar(36)");
 
                     b.Property<decimal>("BaseCost")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("BasePrice")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CategoryId")
@@ -216,7 +217,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Iva")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("LongDescription")
@@ -552,7 +552,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Discount")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("OrderDetailStatusId")
@@ -572,7 +571,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -669,10 +667,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
 
-                    b.Property<string>("AccountGuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(36)");
-
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -680,8 +674,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Guid");
-
-                    b.HasIndex("AccountGuid");
 
                     b.ToTable("Cart", "Cart");
                 });
@@ -900,17 +892,6 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("ProgramProductReference");
                 });
 
-            modelBuilder.Entity("Shop.Entities.ShopCart.Cart", b =>
-                {
-                    b.HasOne("Shop.Entities.Customer.Account", "Account")
-                        .WithMany("Carts")
-                        .HasForeignKey("AccountGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("Shop.Entities.ShopCart.CartItem", b =>
                 {
                     b.HasOne("Shop.Entities.ShopCart.Cart", "Cart")
@@ -975,8 +956,6 @@ namespace Shop.Infrastructure.Migrations
             modelBuilder.Entity("Shop.Entities.Customer.Account", b =>
                 {
                     b.Navigation("Addresses");
-
-                    b.Navigation("Carts");
 
                     b.Navigation("Orders");
                 });
