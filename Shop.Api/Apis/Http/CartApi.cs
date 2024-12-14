@@ -17,7 +17,7 @@ public static class CartApi
 
         accountApi.MapPost("cart", CreateCart);
         accountApi.MapGet("cart/{cartId}", GetCartByGuid);
-        accountApi.MapPost("cart/{cartId}", AddCartItem);
+        accountApi.MapPost("cart/items/{cartId}", UpdateCartItem);
         accountApi.MapGet("cart/account/{accountId}", GetActiveCarts);
 
         return app;
@@ -55,8 +55,8 @@ public static class CartApi
         return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
     }
 
-    public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddCartItem(
-       [FromServices] AddCartItemUseCase<CartItemDto> useCase,
+    public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> UpdateCartItem(
+       [FromServices] UpdateCartItemUseCase<CartItemDto> useCase,
        [FromServices] IValidator<CartItemDto> validator,
        [FromBody] CartItemDto request,
        [FromRoute] string cartId)

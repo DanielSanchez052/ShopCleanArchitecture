@@ -114,7 +114,7 @@ public static class Extensions
         services.AddScoped<CreateCartUseCase<CartDto>>();
         services.AddScoped<GetActiveCartsUseCase<CartViewModel>>();
         services.AddScoped<GetCartByGuidUseCase<CartViewModel>>();
-        services.AddScoped<AddCartItemUseCase<CartItemDto>>();
+        services.AddScoped<UpdateCartItemUseCase<CartItemDto>>();
         return services;
     }
 

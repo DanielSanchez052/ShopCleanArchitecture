@@ -8,6 +8,6 @@ public class CartItemValidator : AbstractValidator<CartItemDto>
     public CartItemValidator()
     {
         RuleFor(x => x.ReferenceGuid).NotEmpty().NotNull().WithMessage("Reference Guid is required");
-        RuleFor(x => x.Quantity).GreaterThan(0).WithMessage("Quantity must be greater than 0");
+        RuleFor(x => x.Quantity).NotNull().WithMessage("Quantity is required");
     }
 }

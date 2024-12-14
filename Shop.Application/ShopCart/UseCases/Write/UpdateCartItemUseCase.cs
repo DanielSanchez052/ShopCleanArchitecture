@@ -8,16 +8,17 @@ using Shop.Entities.ShopCart;
 
 namespace Shop.Application.ShopCart.UseCases.Write;
 
-public class AddCartItemUseCase<Dto>
+public class UpdateCartItemUseCase<Dto>
 {
     private readonly IRepository<Cart> _repository;
     private readonly IRepository<CartItem> _itemsRepository;
     private readonly IMapper<Dto, CartItem> _mapper;
     private readonly IRepository<ProgramProductReference> _referenceRepository;
     private readonly IDbContext _dbContext;
-    private readonly ILogger<AddCartItemUseCase<Dto>> _logger;
+    private readonly ILogger<UpdateCartItemUseCase<Dto>> _logger;
 
-    public AddCartItemUseCase(IRepository<Cart> repository, IRepository<CartItem> itemsRepository, IMapper<Dto, CartItem> mapper, IRepository<ProgramProductReference> referenceRepository, IDbContext dbContext, ILogger<AddCartItemUseCase<Dto>> logger)
+    public UpdateCartItemUseCase(IRepository<Cart> repository, IRepository<CartItem> itemsRepository, IMapper<Dto, CartItem> mapper, IRepository<ProgramProductReference> referenceRepository
+        , IDbContext dbContext, ILogger<UpdateCartItemUseCase<Dto>> logger)
     {
         _repository = repository;
         _itemsRepository = itemsRepository; 
@@ -57,23 +58,32 @@ public class AddCartItemUseCase<Dto>
                 return Result.Failure<string>(Errors.Cart.CouldNotSave);
             }
 
-            var quantity = item.Quantity + maybeCart.Value?.CartItems?.FirstOrDefault(x => x.ReferenceGuid == item.ReferenceGuid)?.Quantity ?? 0;
+            maybeCart.Value?.AddItem(item);
 
-            if (quantity > maybeRefence.Value?.Available)
+            var currentItem = maybeCart.Value?.CartItems.Single(x => x.ReferenceGuid == item.ReferenceGuid || x.Guid == item.Guid);
+
+            if (currentItem?.Quantity > 0 && currentItem?.Quantity > maybeRefence.Value?.Available)
             {
                 return Result.Failure<string>(Errors.Cart.ReferenceNotInventory);
             }
 
             item.SetCartItemDetail(maybeCart.Value?.Guid ?? "", name, price.Value);
-            maybeCart.Value?.AddItem(item);
 
-            if (maybeCart.Value?.CartItems.Any(x => x.Guid == item.Guid) == true)
+            if (maybeCart.Value?.CartItems.Any(x => x.Guid == item.Guid) == true && currentItem?.Quantity > 0)
             {
                 await _itemsRepository.AddAsync(item);
             }
             else
             {
-                _repository.Update(maybeCart.Value);
+                if(currentItem?.Quantity > 0)
+                {
+                    _repository.Update(maybeCart.Value);
+                }
+                else
+                {
+                    _itemsRepository.Delete(currentItem);
+                }
+
             }
             var result = await _dbContext.SaveChangesAsync();
             if (result > 0)
