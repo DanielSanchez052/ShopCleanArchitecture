@@ -60,7 +60,13 @@ public class UpdateCartItemUseCase<Dto>
 
             maybeCart.Value?.AddItem(item);
 
-            var currentItem = maybeCart.Value?.CartItems.Single(x => x.ReferenceGuid == item.ReferenceGuid || x.Guid == item.Guid);
+            var currentItem = maybeCart.Value?.CartItems.Single(x => x.ReferenceGuid == item.ReferenceGuid);
+            var isNew = item.Guid == currentItem?.Guid;
+
+            if(isNew && item.Quantity < 0)
+            {
+                return Result.Failure<string>(Errors.Cart.QuantityInvalid);
+            }
 
             if (currentItem?.Quantity > 0 && currentItem?.Quantity > maybeRefence.Value?.Available)
             {
@@ -78,8 +84,7 @@ public class UpdateCartItemUseCase<Dto>
                 if(currentItem?.Quantity > 0)
                 {
                     _repository.Update(maybeCart.Value);
-                }
-                else
+                } else
                 {
                     _itemsRepository.Delete(currentItem);
                 }
