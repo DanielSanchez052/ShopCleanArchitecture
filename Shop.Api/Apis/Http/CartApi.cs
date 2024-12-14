@@ -17,11 +17,11 @@ public static class CartApi
 
         accountApi.MapPost("cart", CreateCart);
         accountApi.MapGet("cart/{cartId}", GetCartByGuid);
+        accountApi.MapPost("cart/{cartId}", AddCartItem);
         accountApi.MapGet("cart/account/{accountId}", GetActiveCarts);
 
         return app;
     }
-
 
     public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> CreateCart(
         [FromServices] CreateCartUseCase<CartDto> useCase,
@@ -54,6 +54,39 @@ public static class CartApi
 
         return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
     }
+
+    public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddCartItem(
+       [FromServices] AddCartItemUseCase<CartItemDto> useCase,
+       [FromServices] IValidator<CartItemDto> validator,
+       [FromBody] CartItemDto request,
+       [FromRoute] string cartId)
+    {
+        if (request == null)
+        {
+            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
+        }
+
+        var result = await validator.ValidateAsync(request);
+        if (!result.IsValid)
+        {
+            Error[] errors = result.Errors
+                .Select(f => new Error(f.ErrorCode, f.ErrorMessage))
+                .Distinct()
+                .ToArray();
+
+            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "Validation error"), errors));
+        }
+
+        var creationResult = await useCase.ExecuteAsync(cartId, request);
+
+        if (creationResult.IsSuccess)
+        {
+            return TypedResults.Ok(creationResult.Value);
+        }
+
+        return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
+    }
+
 
     public static async Task<Results<Ok<IEnumerable<CartViewModel>>, NotFound>> GetActiveCarts([FromServices] GetActiveCartsUseCase<CartViewModel> useCase, [FromRoute] string accountId)
     {

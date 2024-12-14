@@ -30,4 +30,11 @@ public class CartItem
     public decimal GetTotalPrice() => Price * Quantity;
 
     public void AddQuantity(int quantity) => Quantity += quantity;
+
+    public void SetCartItemDetail(string cartGuid, string name, decimal price)
+    {
+        CartGuid = cartGuid;
+        Name = name;
+        Price = price;
+    }
 }

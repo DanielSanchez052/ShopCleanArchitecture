@@ -32,8 +32,10 @@ public class Cart
         {
             _cartItems.First(x => x.ReferenceGuid == cartItem.ReferenceGuid).AddQuantity(cartItem.Quantity);
         }
-
-        _cartItems.Add(cartItem);
+        else
+        {
+            _cartItems.Add(cartItem);
+        }
     }
     public void RemoveItem(string itemId)
     {

@@ -38,7 +38,7 @@ public static class Extensions
         app.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection"));
-        }, ServiceLifetime.Transient);
+        });
 
         app.Services.Configure<ShopSettings>(app.Configuration.GetSection(ShopSettings.SectionName));
 
@@ -63,6 +63,7 @@ public static class Extensions
         services.AddScoped<IRepository<ProgramProductReference>, ProgramProductReferenceRepository>();
         services.AddScoped<IRepository<Account>, AccountRepository>();
         services.AddScoped<IRepository<Cart>, CartRepository>();
+        services.AddScoped<IRepository<CartItem>, CartitemRepository>();
 
         return services;
     }
@@ -113,6 +114,7 @@ public static class Extensions
         services.AddScoped<CreateCartUseCase<CartDto>>();
         services.AddScoped<GetActiveCartsUseCase<CartViewModel>>();
         services.AddScoped<GetCartByGuidUseCase<CartViewModel>>();
+        services.AddScoped<AddCartItemUseCase<CartItemDto>>();
         return services;
     }
 

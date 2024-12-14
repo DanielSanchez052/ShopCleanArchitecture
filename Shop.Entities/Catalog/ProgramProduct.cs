@@ -51,6 +51,7 @@ public class ProgramProduct
     public Category Category { get; set; } = null!;
     public DateTime CreateDate { get; set; }
     public bool IsActive { get; set; }
+    public decimal GetPrice() => BasePrice+(BasePrice*Iva);
 
     private readonly List<ProgramProductReference> _programProductReferences = new List<ProgramProductReference>();
     public virtual IReadOnlyCollection<ProgramProductReference> ProgramProductReferences => _programProductReferences;

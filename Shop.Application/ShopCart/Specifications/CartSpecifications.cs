@@ -7,7 +7,7 @@ public class GetCartByIdSpec : BaseSpecification<Cart>
 {
     public GetCartByIdSpec(string guid) : base(x => x.Guid == guid && x.IsActive)
     {
-
+        AddInclude(x => x.CartItems);
     }
 }
 
@@ -15,6 +15,7 @@ public class GetCartsActiveSpec : BaseSpecification<Cart>
 {
     public GetCartsActiveSpec(string accountGuid) : base(x => x.AccountGuid == accountGuid && x.IsActive)
     {
+        AddInclude(x => x.CartItems);
     }
 }
 

@@ -4,9 +4,9 @@ using Shop.Infrastructure.Persistence;
 
 namespace Shop.Infrastructure.ShopCart.Repository;
 
-public class CartitemRepository : BaseRepository<CartItem>, IRepository<CartItem>
+public class CartRepository : BaseRepository<Cart>, IRepository<Cart>
 {
-    public CartitemRepository(IDbContext dbContext) : base(dbContext)
+    public CartRepository(IDbContext dbContext) : base(dbContext)
     {
     }
 }
