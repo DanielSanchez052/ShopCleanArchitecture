@@ -5,6 +5,7 @@ using Shop.Api;
 using Shop.Api.AccountModule.Http;
 using Shop.Api.CartModule.Http;
 using Shop.Api.CatalogModule.Http;
+using Shop.Api.OrderingModule.Http;
 using Shop.Application.Catalog.Validators;
 using Shop.Infrastructure;
 using Shop.Infrastructure.Seed;
@@ -48,6 +49,7 @@ if (args.Contains("/seed"))
 app.MapCatalogApiV1();
 app.MapAccountApiV1();
 app.MapCartApiV1();
+app.MapOrderingApiV1();
 
 await app.RunAsync();
 
