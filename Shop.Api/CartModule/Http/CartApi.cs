@@ -14,12 +14,13 @@ public static class CartApi
 {
     public static IEndpointRouteBuilder MapCartApiV1(this IEndpointRouteBuilder app)
     {
-        var accountApi = app.MapGroup("cart");
+        var accountApi = app.MapGroup("cart")
+            .WithTags("Cart");
 
-        accountApi.MapPost("cart", CreateCart);
-        accountApi.MapGet("cart/{cartId}", GetCartByGuid);
-        accountApi.MapPost("cart/items/{cartId}", UpdateCartItem);
-        accountApi.MapGet("cart/account/{accountId}", GetActiveCarts);
+        accountApi.MapPost("", CreateCart);
+        accountApi.MapGet("{cartId}", GetCartByGuid);
+        accountApi.MapPost("items/{cartId}", UpdateCartItem);
+        accountApi.MapGet("account/{accountId}", GetActiveCarts);
 
         return app;
     }
@@ -87,7 +88,6 @@ public static class CartApi
 
         return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
     }
-
 
     public static async Task<Results<Ok<IEnumerable<CartViewModel>>, NotFound>> GetActiveCarts([FromServices] GetActiveCartsUseCase<CartViewModel> useCase, [FromRoute] string accountId)
     {

@@ -15,11 +15,12 @@ public static class AccountApi
 {
     public static IEndpointRouteBuilder MapAccountApiV1(this IEndpointRouteBuilder app)
     {
-        var accountApi = app.MapGroup("account");
+        var accountApi = app.MapGroup("account")
+            .WithTags("Account");
 
-        accountApi.MapPost("account", AddAccount);
-        accountApi.MapGet("account/{accountId}", GetAccountById);
-        accountApi.MapPost("account/{accountId}/address", AddAddress);
+        accountApi.MapPost("", AddAccount);
+        accountApi.MapGet("{accountId}", GetAccountById);
+        accountApi.MapPost("{accountId}/address", AddAddress);
 
         return app;
     }
