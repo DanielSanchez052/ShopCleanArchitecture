@@ -16,4 +16,7 @@ public class OrderDetail
     public decimal Discount { get; set; }
     public DateTime CreateDate { get; set; }
     public DateTime? UpdateDate { get; set; }
+
+    private readonly List<OrderChangeHistory> _changeHistory = new List<OrderChangeHistory>();
+    public virtual IReadOnlyCollection<OrderChangeHistory> ChangeHistory => _changeHistory;
 }

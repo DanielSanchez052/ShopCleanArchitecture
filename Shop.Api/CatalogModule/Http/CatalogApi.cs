@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Api.Apis;
 using Shop.Application;
 using Shop.Application.Catalog;
 using Shop.Application.Catalog.UseCases.Read;
@@ -11,7 +12,7 @@ using Shop.Entities.Catalog;
 using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Infrastructure.Catalog.ViewModel;
 
-namespace Shop.Api.Apis.Http;
+namespace Shop.Api.CatalogModule.Http;
 
 public static class CatalogApi
 {
@@ -28,7 +29,7 @@ public static class CatalogApi
         catalogApi.MapGet("category", GetCategories);
         catalogApi.MapPost("program-product", AddProgramProduct);
         catalogApi.MapPost("product-reference", AddProductReference);
-        
+
 
         return app;
     }
@@ -91,7 +92,7 @@ public static class CatalogApi
     }
 
     public static async Task<Results<Ok<ProgramProductViewModel>, NotFound>> GetProgramProductByCode(
-        [FromServices] GetProgramProductsByCodeUseCase<ProgramProductViewModel> useCase, 
+        [FromServices] GetProgramProductsByCodeUseCase<ProgramProductViewModel> useCase,
         [FromHeader] string? programId,
         [FromRoute] string productCode)
     {
@@ -116,7 +117,7 @@ public static class CatalogApi
        [FromBody] AddProgramProductRequestDto product
        )
     {
-        if(product == null)
+        if (product == null)
         {
             return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
         }

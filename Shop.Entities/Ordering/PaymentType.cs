@@ -15,15 +15,13 @@ public class PaymentType
     {
     }
 
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string? Description { get; set; } = null!;
-    public string Provider { get; set; } = null!;
-    public string? Config { get; set; } 
-    public bool IsActive { get; set; }
+    public int Id { get; private set; }
+    public string Name { get; private set; } = null!;
+    public string? Description { get; private set; } = null!;
+    public string Provider { get; private set; } = null!;
+    public string? Config { get; private set; }
+    public bool IsActive { get; private set; }
 
     private readonly List<Order> _orders = new List<Order>();
-
-
     public virtual IReadOnlyCollection<Order> Orders => _orders;
 }

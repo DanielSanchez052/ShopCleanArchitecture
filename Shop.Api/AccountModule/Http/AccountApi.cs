@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Api.Apis;
 using Shop.Application.Account;
 using Shop.Application.Account.UseCases.Read;
 using Shop.Application.Account.UseCases.Write;
@@ -8,7 +9,7 @@ using Shop.Application.Primitives;
 using Shop.Infrastructure.Customer.Dtos;
 using Shop.Infrastructure.Customer.ViewModel;
 
-namespace Shop.Api.Apis.Http;
+namespace Shop.Api.AccountModule.Http;
 
 public static class AccountApi
 {

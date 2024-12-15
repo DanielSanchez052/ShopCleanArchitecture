@@ -1,8 +1,10 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Options;
-using Shop.Api.Apis.Http;
-using Shop.Api.Extensions;
+using Shop.Api;
+using Shop.Api.AccountModule.Http;
+using Shop.Api.CartModule.Http;
+using Shop.Api.CatalogModule.Http;
 using Shop.Application.Catalog.Validators;
 using Shop.Infrastructure;
 using Shop.Infrastructure.Seed;
