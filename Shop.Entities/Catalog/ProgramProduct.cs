@@ -47,6 +47,7 @@ public class ProgramProduct
     public decimal BasePrice { get; set; }
     public decimal Iva { get; set; }
     public decimal BaseCost { get; set; }
+    public int? PointValue { get; set; }
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
     public DateTime CreateDate { get; set; }

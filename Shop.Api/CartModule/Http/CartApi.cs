@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Shop.Api.Apis;
+using Shop.Api.Models;
 using Shop.Application.Primitives;
 using Shop.Application.ShopCart.UseCases.Read;
 using Shop.Application.ShopCart.UseCases.Write;

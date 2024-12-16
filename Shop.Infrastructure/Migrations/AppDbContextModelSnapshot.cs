@@ -232,6 +232,9 @@ namespace Shop.Infrastructure.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
+                    b.Property<int?>("PointValue")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProductGuid")
                         .IsRequired()
                         .HasMaxLength(36)
@@ -325,6 +328,11 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -697,7 +705,40 @@ namespace Shop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentType", "ordering");
+                    b.ToTable("PaymentType", "payment");
+                });
+
+            modelBuilder.Entity("Shop.Entities.Payment.PaymentRules", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AutoCalulated")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Factor")
+                        .HasPrecision(10, 5)
+                        .HasColumnType("decimal(10,5)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
+
+                    b.ToTable("PaymentRules", "payment");
                 });
 
             modelBuilder.Entity("Shop.Entities.ShopCart.Cart", b =>
@@ -954,6 +995,17 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("ProgramProductReference");
                 });
 
+            modelBuilder.Entity("Shop.Entities.Payment.PaymentRules", b =>
+                {
+                    b.HasOne("Shop.Entities.Config.Program", "Program")
+                        .WithMany("PaymentRules")
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Program");
+                });
+
             modelBuilder.Entity("Shop.Entities.ShopCart.Cart", b =>
                 {
                     b.HasOne("Shop.Entities.Customer.Account", "Account")
@@ -1022,6 +1074,8 @@ namespace Shop.Infrastructure.Migrations
             modelBuilder.Entity("Shop.Entities.Config.Program", b =>
                 {
                     b.Navigation("Categories");
+
+                    b.Navigation("PaymentRules");
 
                     b.Navigation("ProgramProducts");
                 });

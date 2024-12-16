@@ -5,10 +5,10 @@ using Shop.Application.Catalog;
 using Shop.Application;
 using Shop.Infrastructure.Catalog.ViewModel;
 using FluentValidation;
-using Shop.Api.Apis;
 using Shop.Application.Catalog.UseCases.Write;
 using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Application.Primitives;
+using Shop.Api.Models;
 
 namespace Shop.Api.CatalogModule.Http;
 
@@ -20,7 +20,7 @@ public static class ProductApi
 
         productApi.MapGet("/", GetProducts);
         productApi.MapGet("/{productCode}", GetProductById);
-        productApi.MapPost("", AddProduct);
+        //productApi.MapPost("", AddProduct);
 
         productApi.MapGet("product-type/", GetProductTypes);
         productApi.MapGet("category", GetCategories);

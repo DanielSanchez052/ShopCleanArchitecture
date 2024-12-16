@@ -5,6 +5,7 @@ using Shop.Entities.Catalog;
 using Shop.Entities.Config;
 using Shop.Entities.Digital;
 using Shop.Entities.Ordering;
+using Shop.Entities.Payment;
 
 namespace Shop.Infrastructure.Seed;
 

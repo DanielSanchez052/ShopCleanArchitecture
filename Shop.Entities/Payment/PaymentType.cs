@@ -1,4 +1,6 @@
-﻿namespace Shop.Entities.Ordering;
+﻿using Shop.Entities.Ordering;
+
+namespace Shop.Entities.Payment;
 
 public class PaymentType
 {

@@ -1,4 +1,4 @@
-﻿namespace Shop.Infrastructure.Ordering.ViewModel;
+﻿namespace Shop.Infrastructure.Payment.ViewModel;
 
 public class PaymentTypeViewModel
 {

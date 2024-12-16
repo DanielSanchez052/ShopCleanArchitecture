@@ -1,8 +1,8 @@
 ﻿using Shop.Application.Interfaces;
-using Shop.Entities.Ordering;
-using Shop.Infrastructure.Ordering.ViewModel;
+using Shop.Entities.Payment;
+using Shop.Infrastructure.Payment.ViewModel;
 
-namespace Shop.Infrastructure.Ordering.Presenter;
+namespace Shop.Infrastructure.Payment.Presenter;
 
 public class PaymentTypePresenter : IPresenter<PaymentType, PaymentTypeViewModel>
 {

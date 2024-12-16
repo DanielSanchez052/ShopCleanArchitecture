@@ -1,6 +1,6 @@
 ﻿using Shop.Application.Primitives;
 
-namespace Shop.Api.Apis;
+namespace Shop.Api.Models;
 
 public class ApiErrorResponse
 {

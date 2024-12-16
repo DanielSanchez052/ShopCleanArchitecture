@@ -5,6 +5,7 @@ using Shop.Entities.Config;
 using Shop.Entities.Customer;
 using Shop.Entities.Digital;
 using Shop.Entities.Ordering;
+using Shop.Entities.Payment;
 using Shop.Entities.ShopCart;
 
 namespace Shop.Infrastructure;

@@ -1,8 +1,8 @@
 ﻿using Shop.Application.Interfaces;
-using Shop.Application.Ordering.Specifications;
-using Shop.Entities.Ordering;
+using Shop.Application.Payment.Specifications;
+using Shop.Entities.Payment;
 
-namespace Shop.Application.Ordering.UseCases.Read;
+namespace Shop.Application.Payment.UseCases.Read;
 
 public class GetActivePaymentTypesUseCase<TOutput>
 {

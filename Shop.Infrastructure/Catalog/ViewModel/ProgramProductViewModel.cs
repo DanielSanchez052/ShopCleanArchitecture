@@ -16,6 +16,8 @@ public class ProgramProductViewModel
     public decimal BasePrice { get; set; }
     public decimal Iva { get; set; }
     public decimal BaseCost { get; set; }
+    public decimal Price { get; set; }
+    public int PointValue { get; set; }
     public int ProductTypeId { get; set; }
     public string ProductTypeName { get; set; } = null!;
     public List<ProductReferenceViewModel> References { get; set; } = new();

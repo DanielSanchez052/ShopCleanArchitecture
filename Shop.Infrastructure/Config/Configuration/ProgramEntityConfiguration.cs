@@ -20,6 +20,10 @@ public class ProgramEntityConfiguration : IEntityTypeConfiguration<Program>
             .IsRequired()
             .HasMaxLength(255);
 
+        builder.Property(x => x.Slug)
+           .IsRequired()
+           .HasMaxLength(255);
+
         builder.Property(x => x.IsActive).IsRequired();
     }
 }

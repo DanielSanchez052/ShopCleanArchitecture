@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shop.Entities.Ordering;
+using Shop.Entities.Payment;
 
-namespace Shop.Infrastructure.Ordering.Configuration;
+namespace Shop.Infrastructure.Payment.Configuration;
 
 public class PaymentTypeEntityConfiguration : IEntityTypeConfiguration<PaymentType>
 {
     public void Configure(EntityTypeBuilder<PaymentType> builder)
     {
-        builder.ToTable(nameof(PaymentType), Schemas.Ordering);
+        builder.ToTable(nameof(PaymentType), Schemas.Payment);
 
         builder.HasKey(x => x.Id);
 

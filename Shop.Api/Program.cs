@@ -1,23 +1,38 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Shop.Api;
 using Shop.Api.AccountModule.Http;
 using Shop.Api.CartModule.Http;
 using Shop.Api.CatalogModule.Http;
+using Shop.Api.ConfigModule;
+using Shop.Api.ConfigModule.Extensions;
 using Shop.Api.OrderingModule.Http;
-using Shop.Application.Catalog.Validators;
+using Shop.Api.PaymentModule.Http;
 using Shop.Infrastructure;
+using Shop.Infrastructure.Catalog.Validators;
+using Shop.Infrastructure.Config.Presenter;
 using Shop.Infrastructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMemoryCache();
+
+builder.Services.AddMultiTenancy()
+    .WithResolutionStrategy<ProgramHeaderResolutionStrategy>()
+    .WithStore<ProgramContextPresenter>();
 
 builder.AddInfrastructure();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shop.Api", Version = "v1" });
+    c.OperationFilter<CustomProgramIdentifierParameter>();
+});
 
 //validators
 builder.Services.AddValidatorsFromAssemblyContaining<AddProgramProductValidator>();
@@ -46,10 +61,13 @@ if (args.Contains("/seed"))
     return;
 }
 
+app.UseMultiTenancy();
+
 app.MapCatalogApiV1();
 app.MapAccountApiV1();
 app.MapCartApiV1();
 app.MapOrderingApiV1();
+app.MapPaymentApiV1();
 
 await app.RunAsync();
 

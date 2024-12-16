@@ -1,7 +1,7 @@
 ﻿using Shop.Application.Specifications;
-using Shop.Entities.Ordering;
+using Shop.Entities.Payment;
 
-namespace Shop.Application.Ordering.Specifications;
+namespace Shop.Application.Payment.Specifications;
 
 public class GetActivePaymentTypesSpecification : BaseSpecification<PaymentType>
 {

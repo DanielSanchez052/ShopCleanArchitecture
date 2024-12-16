@@ -1,4 +1,5 @@
 ﻿using Shop.Entities.Catalog;
+using Shop.Entities.Payment;
 
 namespace Shop.Entities.Config;
 
@@ -21,6 +22,7 @@ public class Program
 
     public int Id { get; set; }
     public string Name { get; set; } = null!;
+    public string Slug { get; set; }
     public bool IsActive { get; set; }
     public string? Config { get; set; }
     public DateTime StartDate { get; set; }
@@ -32,4 +34,6 @@ public class Program
 
     private readonly List<Category> _categories = new List<Category>();
     public virtual IReadOnlyCollection<Category> Categories => _categories;
+    private readonly List<PaymentRules> _paymentRules = new List<PaymentRules>();
+    public virtual IReadOnlyCollection<PaymentRules> PaymentRules => _paymentRules;
 }

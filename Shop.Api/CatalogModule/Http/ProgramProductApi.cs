@@ -5,10 +5,10 @@ using Shop.Application.Catalog;
 using Shop.Application;
 using Shop.Infrastructure.Catalog.ViewModel;
 using FluentValidation;
-using Shop.Api.Apis;
 using Shop.Application.Catalog.UseCases.Write;
 using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Application.Primitives;
+using Shop.Api.Models;
 
 namespace Shop.Api.CatalogModule.Http;
 
@@ -21,8 +21,8 @@ public static class ProgramProductApi
 
         programProductApi.MapGet("/", GetProgramProducts);
         programProductApi.MapGet("/{productCode}", GetProgramProductByCode);
-        programProductApi.MapPost("", AddProgramProduct);
-        programProductApi.MapPost("product-reference", AddProductReference);
+        //programProductApi.MapPost("", AddProgramProduct);
+        //programProductApi.MapPost("product-reference", AddProductReference);
 
         return group;
     }

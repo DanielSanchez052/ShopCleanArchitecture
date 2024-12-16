@@ -8,5 +8,6 @@ public class Schemas
     public const string Ordering = "ordering";
     public const string Customer = "customer";
     public const string ShopCart = "Cart";
+    public const string Payment = "payment";
 
 }

@@ -14,6 +14,7 @@ public class GetProgramProductSpecification : BaseSpecification<ProgramProduct>
             && x.IsActive)
     {
         AddInclude(x => x.Product);
+        AddInclude(x => x.Program.PaymentRules);
         AddInclude(x => x.Product.ProductType);
         AddInclude(x => x.ProductImages);
         AddInclude(x => x.ProgramProductReferences);
@@ -59,6 +60,7 @@ public class GetProductByGuidSpecification : BaseSpecification<ProgramProduct>
     {
         AddInclude(x => x.Product);
         AddInclude(x => x.Product.ProductType);
+        AddInclude(x => x.Program.PaymentRules);
         AddInclude(x => x.ProductImages);
         AddInclude(x => x.ProgramProductReferences);
         AddInclude(x => x.Category);

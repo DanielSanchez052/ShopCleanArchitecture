@@ -73,6 +73,9 @@ public class ProgramProductEntityConfiguration : IEntityTypeConfiguration<Progra
             .HasPrecision(18, 2)
             .IsRequired();
 
+        builder.Property(x => x.PointValue)
+            .IsRequired(false);
+
         builder.Property(a => a.CategoryId)
           .IsRequired();
 

@@ -2,7 +2,9 @@
 using Shop.Api.AccountModule;
 using Shop.Api.CartModule;
 using Shop.Api.CatalogModule;
+using Shop.Api.ConfigModule;
 using Shop.Api.OrderingModule;
+using Shop.Api.PaymentModule;
 using Shop.Application.Interfaces;
 using Shop.Application.Security.Services;
 using Shop.Infrastructure;
@@ -28,8 +30,8 @@ public static class Extensions
         app.AddAccountModule();
         app.AddCartModule();
         app.AddOrderingModule();
-
-        app.Services.AddScoped<IRepository<Entities.Config.Program>, ProgramRepository>();
+        app.AddPaymentModule();
+        app.AddConfigModule();
         app.Services.AddServices();
 
         return app;
