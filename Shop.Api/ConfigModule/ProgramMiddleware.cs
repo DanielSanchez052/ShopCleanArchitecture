@@ -15,7 +15,7 @@ public class ProgramMiddleware<T> where T : ProgramContext
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if (context.Items.ContainsKey(ConfigConstants.HttpContextProgramKey))
+        if (!context.Items.ContainsKey(ConfigConstants.HttpContextProgramKey))
         {
             var getProgram = context.RequestServices.GetService(typeof(GetProgramBySlugUseCase<T>)) as GetProgramBySlugUseCase<T>;
             var programResolution = context.RequestServices.GetService(typeof(IProgramResolutionStrategy)) as IProgramResolutionStrategy;
@@ -24,7 +24,8 @@ public class ProgramMiddleware<T> where T : ProgramContext
             if(identifier != null)
             {
                 var programContext = await getProgram?.ExecuteAsync(identifier);
-                context.Items.Add(ConfigConstants.HttpContextProgramKey, programContext);
+                if(programContext != null)
+                    context.Items.Add(ConfigConstants.HttpContextProgramKey, programContext);
             }
         }
 

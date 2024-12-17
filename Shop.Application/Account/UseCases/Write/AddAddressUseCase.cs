@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Shop.Application.Account.Specifications;
 using Shop.Application.Interfaces;
 using Shop.Application.Primitives;
 using Shop.Application.Primitives.Result;
@@ -21,7 +22,7 @@ public class AddAddressUseCase<TDto>
     }
 
 
-    public async Task<Result<int>> ExecuteAsync(TDto dto, string accountId)
+    public async Task<Result<int>> ExecuteAsync(TDto dto, string accountId, int programId)
     {
         if (dto == null)
             throw new ArgumentNullException(nameof(dto));
@@ -30,7 +31,8 @@ public class AddAddressUseCase<TDto>
         try
         {
             var errors = new List<Error>();
-            var account = await _repository.GetByString(accountId);
+            var specification = new GetAccountByIdSpecification(accountId, programId);
+            var account = await _repository.GetEntityWithSpec(specification);
             if (account == null || account.HasNoValue)
             {
                 return Result.Failure<int>(Errors.Account.NotFound);

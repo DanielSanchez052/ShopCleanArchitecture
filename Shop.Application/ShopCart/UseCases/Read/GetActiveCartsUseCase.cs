@@ -16,12 +16,12 @@ public class GetCartByGuidUseCase<TOutput>
         _repository = repository;
     }
 
-    public async Task<Maybe<TOutput>> ExecuteAsync(string guid)
+    public async Task<Maybe<TOutput>> ExecuteAsync(string guid, int programId)
     {
         if (string.IsNullOrEmpty(guid))
             throw new ArgumentNullException(nameof(guid));
 
-        var spec = new GetCartByIdSpec(guid);
+        var spec = new GetCartByIdSpec(guid, programId);
         var cart = await _repository.GetEntityWithSpec(spec);
 
         if (cart.HasNoValue)

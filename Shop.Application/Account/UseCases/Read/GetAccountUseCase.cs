@@ -1,7 +1,6 @@
 ﻿using Shop.Application.Account.Specifications;
 using Shop.Application.Interfaces;
 using Shop.Application.Primitives.Maybe;
-using Shop.Application.Primitives.Result;
 
 namespace Shop.Application.Account.UseCases.Read;
 
@@ -16,21 +15,21 @@ public class GetAccountUseCase<TOutput>
         _presenter = presenter;
     }
 
-    public async Task<Maybe<TOutput>> ExecuteAsync(string accountId)
+    public async Task<Maybe<TOutput>> ExecuteAsync(string accountId, int programId)
     {
-        if (string.IsNullOrEmpty(accountId)) 
+        if (string.IsNullOrEmpty(accountId))
             throw new ArgumentNullException(nameof(accountId));
 
-        var spec= new GetAccountByIdSpecification(accountId);
+        var spec = new GetAccountByIdSpecification(accountId, programId);
         var account = await _repository.GetEntityWithSpec(spec);
 
-        if(account == null || account.HasNoValue)
+        if (account == null || account.HasNoValue)
         {
             return Maybe<TOutput>.None;
         }
 
         var presented = _presenter.Present(account.Value);
         return Maybe<TOutput>.From(presented);
-        
+
     }
 }

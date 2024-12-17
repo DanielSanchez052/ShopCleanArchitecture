@@ -27,7 +27,11 @@ public class GetProgramBySlugUseCase<Dto>
         {
             var spec = new GetProgramBySlugSpecification(slug);
             var programDb = await _repository.GetEntityWithSpec(spec);
-    
+            if(programDb.HasNoValue)
+            {
+                return default(Dto);
+            }
+
             program = _presenter.Present(programDb);
 
         }

@@ -9,6 +9,7 @@ using Shop.Application.Catalog.UseCases.Write;
 using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Application.Primitives;
 using Shop.Api.Models;
+using Shop.Api.ConfigModule.Extensions;
 
 namespace Shop.Api.CatalogModule.Http;
 
@@ -86,14 +87,12 @@ public static class ProductApi
         return TypedResults.Ok(productTypes.ToList());
     }
 
-    public static async Task<Results<Ok<IEnumerable<CategoryViewModel>>, NotFound>> GetCategories([FromServices] GetCategories<CategoryViewModel> useCase, [FromHeader] string? programId)
+    public static async Task<Results<Ok<IEnumerable<CategoryViewModel>>, NotFound>> GetCategories(
+        HttpContext context,
+        [FromServices] GetCategories<CategoryViewModel> useCase)
     {
-        if (programId == null || !int.TryParse(programId, out int program))
-        {
-            return TypedResults.NotFound();
-        }
-
-        var product = await useCase.ExecuteAsync(program);
+        var program = context.GetProgramContext();
+        var product = await useCase.ExecuteAsync(program.Id);
 
         if (product != null)
         {

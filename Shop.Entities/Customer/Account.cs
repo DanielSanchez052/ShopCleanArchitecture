@@ -1,4 +1,5 @@
-﻿using Shop.Entities.Ordering;
+﻿using Shop.Entities.Config;
+using Shop.Entities.Ordering;
 using Shop.Entities.ShopCart;
 
 namespace Shop.Entities.Customer;
@@ -17,6 +18,8 @@ public class Account
     public DateTime CreateDate { get; set; }
     public bool IsActive { get; set; }
 
+    public int ProgramId { get; set; }
+    public Program Program { get; set; }
     public virtual IReadOnlyCollection<Address> Addresses => _addresses;
     public virtual IReadOnlyCollection<Cart> Carts => _carts;
     public virtual IReadOnlyCollection<Order> Orders => _orders;

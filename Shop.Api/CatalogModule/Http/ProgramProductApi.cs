@@ -9,6 +9,8 @@ using Shop.Application.Catalog.UseCases.Write;
 using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Application.Primitives;
 using Shop.Api.Models;
+using Shop.Api.Filters;
+using Shop.Api.ConfigModule.Extensions;
 
 namespace Shop.Api.CatalogModule.Http;
 
@@ -19,17 +21,23 @@ public static class ProgramProductApi
         var programProductApi = group.MapGroup("program-product")
             .WithTags("ProgramProduct");
 
-        programProductApi.MapGet("/", GetProgramProducts);
-        programProductApi.MapGet("/{productCode}", GetProgramProductByCode);
+        programProductApi.MapGet("/", GetProgramProducts)
+            .AddEndpointFilter<RequireProgramFilter>();
+        programProductApi.MapGet("/{productCode}", GetProgramProductByCode)
+            .AddEndpointFilter<RequireProgramFilter>();
         //programProductApi.MapPost("", AddProgramProduct);
         //programProductApi.MapPost("product-reference", AddProductReference);
 
         return group;
     }
 
-    public static async Task<Results<Ok<PagedList<ProgramProductViewModel>>, NotFound>> GetProgramProducts([FromServices] GetProgramProductsByFilterUseCase<ProgramProductViewModel> useCase, [AsParameters] ProgramProductFilterParams filters)
+    public static async Task<Results<Ok<PagedList<ProgramProductViewModel>>, NotFound>> GetProgramProducts(
+        HttpContext context,
+        [FromServices] GetProgramProductsByFilterUseCase<ProgramProductViewModel> useCase, 
+        [AsParameters] ProgramProductFilterParams filters)
     {
-        var product = await useCase.ExecuteAsync(filters);
+        var program = context.GetProgramContext();
+        var product = await useCase.ExecuteAsync(program.Id, filters);
 
         if (product != null)
         {
@@ -40,16 +48,12 @@ public static class ProgramProductApi
     }
 
     public static async Task<Results<Ok<ProgramProductViewModel>, NotFound>> GetProgramProductByCode(
+        HttpContext context,
        [FromServices] GetProgramProductsByCodeUseCase<ProgramProductViewModel> useCase,
-       [FromHeader] string? programId,
        [FromRoute] string productCode)
     {
-        if (programId == null || !int.TryParse(programId, out int program))
-        {
-            return TypedResults.NotFound();
-        }
-
-        var product = await useCase.ExecuteAsync(program, productCode);
+        var program = context.GetProgramContext();
+        var product = await useCase.ExecuteAsync(program.Id, productCode);
 
         if (product.HasValue)
         {
@@ -58,7 +62,8 @@ public static class ProgramProductApi
 
         return TypedResults.NotFound();
     }
-
+    
+    //TODO: Add programContext
     public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddProgramProduct(
        [FromServices] AddProductToProgramUseCase<AddProgramProductRequestDto> useCase,
        [FromServices] IValidator<AddProgramProductRequestDto> validator,

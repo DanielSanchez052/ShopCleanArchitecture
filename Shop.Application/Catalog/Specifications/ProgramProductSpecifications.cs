@@ -4,8 +4,8 @@ namespace Shop.Application.Catalog.Specifications;
 
 public class GetProgramProductSpecification : BaseSpecification<ProgramProduct>
 {
-    public GetProgramProductSpecification(ProgramProductFilterParams filters)
-        : base(x => x.ProgramId == filters.ProgramId
+    public GetProgramProductSpecification(int programId, ProgramProductFilterParams filters)
+        : base(x => x.ProgramId == programId
             && ( string.IsNullOrEmpty(filters.Segment) || (!string.IsNullOrEmpty(x.Segment) && x.Segment.Contains(filters.Segment, StringComparison.OrdinalIgnoreCase))
             && ( string.IsNullOrEmpty(filters.Name) || x.Name.Contains(filters.Name, StringComparison.OrdinalIgnoreCase))
             && ( string.IsNullOrEmpty(filters.NominalValue) || x.NominalValue == x.NominalValue)
@@ -39,8 +39,8 @@ public class GetProgramProductSpecification : BaseSpecification<ProgramProduct>
 
 public class GetProgramProductSpecificationCount : BaseSpecification<ProgramProduct>
 {
-    public GetProgramProductSpecificationCount(ProgramProductFilterParams filters)
-        : base(x => x.ProgramId == filters.ProgramId
+    public GetProgramProductSpecificationCount(int programId, ProgramProductFilterParams filters)
+        : base(x => x.ProgramId == programId
             && (string.IsNullOrEmpty(filters.Segment) || (!string.IsNullOrEmpty(x.Segment) && x.Segment.Contains(filters.Segment, StringComparison.OrdinalIgnoreCase))
             && (string.IsNullOrEmpty(filters.Name) || x.Name.Contains(filters.Name, StringComparison.OrdinalIgnoreCase))
             && (string.IsNullOrEmpty(filters.NominalValue) || x.NominalValue == x.NominalValue)

@@ -19,7 +19,7 @@ public class GetProgramProductsByFilterUseCase<TOutput>
         _logger = logger;
     }
 
-    public async Task<PagedList<TOutput>> ExecuteAsync(ProgramProductFilterParams filters)
+    public async Task<PagedList<TOutput>> ExecuteAsync(int programId, ProgramProductFilterParams filters)
     {
         if (filters == null)
         {
@@ -30,8 +30,8 @@ public class GetProgramProductsByFilterUseCase<TOutput>
 
         try
         {
-            var specFilter = new GetProgramProductSpecification(filters);
-            var specFilterCount = new GetProgramProductSpecificationCount(filters);
+            var specFilter = new GetProgramProductSpecification(programId, filters);
+            var specFilterCount = new GetProgramProductSpecificationCount(programId, filters);
 
             var products = await _productRepository.ListAsync(specFilter);
             var productsCount = await _productRepository.CountAsync(specFilterCount);

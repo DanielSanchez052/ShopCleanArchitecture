@@ -1,4 +1,5 @@
-﻿using Shop.Infrastructure.Config.Abstractions;
+﻿using Shop.Infrastructure.Config;
+using Shop.Infrastructure.Config.Abstractions;
 
 namespace Shop.Api.ConfigModule;
 
@@ -15,6 +16,6 @@ public class ProgramHeaderResolutionStrategy : IProgramResolutionStrategy
     {
         if (_httpContext is null)
             return Task.FromResult(string.Empty);
-        return Task.FromResult(_httpContext.Request.Headers["x-program"].ToString());
+        return Task.FromResult(_httpContext.Request.Headers[ConfigConstants.ProgramIdentifierHeaderName].ToString());
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Shop.Entities.Catalog;
+using Shop.Entities.Customer;
 using Shop.Entities.Payment;
 
 namespace Shop.Entities.Config;
@@ -36,4 +37,7 @@ public class Program
     public virtual IReadOnlyCollection<Category> Categories => _categories;
     private readonly List<PaymentRules> _paymentRules = new List<PaymentRules>();
     public virtual IReadOnlyCollection<PaymentRules> PaymentRules => _paymentRules;
+    private readonly List<Account> _accounts = new List<Account>();
+    public virtual IReadOnlyCollection<Account> Accounts => _accounts;
+
 }

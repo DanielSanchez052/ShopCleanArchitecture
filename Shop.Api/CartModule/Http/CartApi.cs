@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Api.ConfigModule.Extensions;
+using Shop.Api.Filters;
 using Shop.Api.Models;
 using Shop.Application.Primitives;
 using Shop.Application.ShopCart.UseCases.Read;
@@ -17,37 +19,32 @@ public static class CartApi
         var accountApi = app.MapGroup("cart")
             .WithTags("Cart");
 
-        accountApi.MapPost("", CreateCart);
-        accountApi.MapGet("{cartId}", GetCartByGuid);
-        accountApi.MapPost("items/{cartId}", UpdateCartItem);
-        accountApi.MapGet("account/{accountId}", GetActiveCarts);
+        accountApi.MapGet("{cartId}", GetCartByGuid)
+            .AddEndpointFilter<RequireProgramFilter>();
+
+        accountApi.MapGet("account/{accountId}", GetActiveCarts)
+            .AddEndpointFilter<RequireProgramFilter>();
+
+        accountApi.MapPost("", CreateCart)
+            .AddEndpointFilter<RequireProgramFilter>()
+            .AddEndpointFilter<FluentValidationFilter<CartDto>>();
+
+        accountApi.MapPost("items/{cartId}", UpdateCartItem)
+            .AddEndpointFilter<RequireProgramFilter>()
+            .AddEndpointFilter<FluentValidationFilter<CartItemDto>>();
 
         return app;
     }
 
     public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> CreateCart(
+        HttpContext context,
         [FromServices] CreateCartUseCase<CartDto> useCase,
         [FromServices] IValidator<CartDto> validator,
         [FromBody] CartDto request)
     {
-        if (request == null)
-        {
-            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
-        }
+        var program = context.GetProgramContext();
 
-        var result = await validator.ValidateAsync(request);
-        if (!result.IsValid)
-        {
-            Error[] errors = result.Errors
-                .Select(f => new Error(f.ErrorCode, f.ErrorMessage))
-                .Distinct()
-                .ToArray();
-
-            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "Validation error"), errors));
-        }
-
-
-        var creationResult = await useCase.ExecuteAsync(request);
+        var creationResult = await useCase.ExecuteAsync(program.Id, request);
 
         if (creationResult.IsSuccess)
         {
@@ -58,28 +55,15 @@ public static class CartApi
     }
 
     public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> UpdateCartItem(
+        HttpContext context,
        [FromServices] UpdateCartItemUseCase<CartItemDto> useCase,
        [FromServices] IValidator<CartItemDto> validator,
        [FromBody] CartItemDto request,
        [FromRoute] string cartId)
     {
-        if (request == null)
-        {
-            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
-        }
+        var program = context.GetProgramContext();
 
-        var result = await validator.ValidateAsync(request);
-        if (!result.IsValid)
-        {
-            Error[] errors = result.Errors
-                .Select(f => new Error(f.ErrorCode, f.ErrorMessage))
-                .Distinct()
-                .ToArray();
-
-            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "Validation error"), errors));
-        }
-
-        var creationResult = await useCase.ExecuteAsync(cartId, request);
+        var creationResult = await useCase.ExecuteAsync(cartId, program.Id, request);
 
         if (creationResult.IsSuccess)
         {
@@ -89,9 +73,14 @@ public static class CartApi
         return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
     }
 
-    public static async Task<Results<Ok<IEnumerable<CartViewModel>>, NotFound>> GetActiveCarts([FromServices] GetActiveCartsUseCase<CartViewModel> useCase, [FromRoute] string accountId)
+    public static async Task<Results<Ok<IEnumerable<CartViewModel>>, NotFound>> GetActiveCarts(
+        HttpContext context,
+        [FromServices] GetActiveCartsUseCase<CartViewModel> useCase,
+        [FromRoute] string accountId)
     {
-        var carts = await useCase.ExecuteAsync(accountId);
+        var program = context.GetProgramContext();
+
+        var carts = await useCase.ExecuteAsync(accountId, program.Id);
 
         if (carts is null || carts.Count() == 0)
         {
@@ -101,9 +90,12 @@ public static class CartApi
         return TypedResults.Ok(carts);
     }
 
-    public static async Task<Results<Ok<CartViewModel>, NotFound>> GetCartByGuid([FromServices] GetCartByGuidUseCase<CartViewModel> useCase, [FromRoute] string cartId)
+    public static async Task<Results<Ok<CartViewModel>, NotFound>> GetCartByGuid(
+        HttpContext context, [FromServices] GetCartByGuidUseCase<CartViewModel> useCase, [FromRoute] string cartId)
     {
-        var cart = await useCase.ExecuteAsync(cartId);
+        var program = context.GetProgramContext();
+
+        var cart = await useCase.ExecuteAsync(cartId, program.Id);
 
         if (cart.HasValue)
         {

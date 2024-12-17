@@ -15,12 +15,12 @@ public class GetActiveCartsUseCase<TOutput>
         _repository = repository;
     }
 
-    public async Task<IEnumerable<TOutput>> ExecuteAsync(string accountId)
+    public async Task<IEnumerable<TOutput>> ExecuteAsync(string accountId, int programId)
     {
         if (string.IsNullOrEmpty(accountId))
             throw new ArgumentNullException(nameof(accountId));
 
-        var spec = new GetCartsActiveSpec(accountId);
+        var spec = new GetCartsActiveSpec(accountId, programId);
         var carts = await _repository.ListAsync(spec);
 
         return carts.Count() == 0 ? Enumerable.Empty<TOutput>() : _presenter.PresentCollection(carts);

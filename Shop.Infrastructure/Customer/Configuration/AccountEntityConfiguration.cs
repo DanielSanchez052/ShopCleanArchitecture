@@ -21,6 +21,13 @@ public class AccountEntityConfiguration : IEntityTypeConfiguration<Account>
         builder.Property(x => x.Email).HasMaxLength(255);
         builder.Property(x => x.PhoneNumber).HasMaxLength(155);
 
+        builder.Property(x => x.ProgramId).IsRequired();
+
+        builder.HasOne(x => x.Program)
+            .WithMany(x => x.Accounts)
+            .HasForeignKey(x => x.ProgramId)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
         builder.Property(x => x.CreateDate)
             .IsRequired();

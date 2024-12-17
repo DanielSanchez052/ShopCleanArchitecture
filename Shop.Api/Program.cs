@@ -32,6 +32,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shop.Api", Version = "v1" });
     c.OperationFilter<CustomProgramIdentifierParameter>();
+
 });
 
 //validators

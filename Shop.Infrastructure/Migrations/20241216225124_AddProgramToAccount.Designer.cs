@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure;
 
@@ -11,9 +12,11 @@ using Shop.Infrastructure;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241216225124_AddProgramToAccount")]
+    partial class AddProgramToAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,7 +376,7 @@ namespace Shop.Infrastructure.Migrations
                         .HasMaxLength(155)
                         .HasColumnType("nvarchar(155)");
 
-                    b.Property<int>("ProgramId")
+                    b.Property<int?>("ProgramId")
                         .HasColumnType("int");
 
                     b.HasKey("Guid");
@@ -896,8 +899,7 @@ namespace Shop.Infrastructure.Migrations
                     b.HasOne("Shop.Entities.Config.Program", "Program")
                         .WithMany("Accounts")
                         .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Program");
                 });

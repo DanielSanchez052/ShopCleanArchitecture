@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Shop.Application.Account.Specifications;
 using Shop.Application.Interfaces;
 using Shop.Application.Primitives;
 using Shop.Application.Primitives.Result;
@@ -21,7 +22,7 @@ public class AddAccountUseCase<TDto>
         _logger = logger;
     }
 
-    public async Task<Result<string>> ExecuteAsync(TDto dto)
+    public async Task<Result<string>> ExecuteAsync(TDto dto, int programId)
     {
         if (dto == null)
             throw new ArgumentNullException(nameof(dto));
@@ -31,10 +32,13 @@ public class AddAccountUseCase<TDto>
             var errors = new List<Error>();
             var entity = _mapper.ToEntity(dto) ;
 
-            var account = await _repository.GetByString(entity.Guid);
+            var specification = new GetAccountByIdSpecification(entity.Guid, programId);
+            var account = await _repository.GetEntityWithSpec(specification);
             //if exists create if not update
             if (account.HasNoValue)
             {
+                entity.ProgramId = programId;
+
                 await _repository.AddAsync(entity);
             }
             else

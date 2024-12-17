@@ -1,11 +1,11 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Api.ConfigModule.Extensions;
+using Shop.Api.Filters;
 using Shop.Api.Models;
-using Shop.Application.Account;
 using Shop.Application.Account.UseCases.Read;
 using Shop.Application.Account.UseCases.Write;
-using Shop.Application.Primitives;
 using Shop.Infrastructure.Customer.Dtos;
 using Shop.Infrastructure.Customer.ViewModel;
 
@@ -18,37 +18,29 @@ public static class AccountApi
         var accountApi = app.MapGroup("account")
             .WithTags("Account");
 
-        accountApi.MapPost("", AddAccount);
-        accountApi.MapGet("{accountId}", GetAccountById);
-        accountApi.MapPost("{accountId}/address", AddAddress);
+        accountApi.MapPost("", AddAccount)
+            .AddEndpointFilter<RequireProgramFilter>()
+            .AddEndpointFilter<FluentValidationFilter<AddAccountRequestDto>>();
+
+        accountApi.MapGet("{accountId}", GetAccountById).AddEndpointFilter<RequireProgramFilter>();
+        accountApi.MapPost("{accountId}/address", AddAddress)
+            .AddEndpointFilter<RequireProgramFilter>()
+            .AddEndpointFilter<FluentValidationFilter<AddressModel>>(); ;
 
         return app;
     }
 
 
     public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddAccount(
+       HttpContext context,
        [FromServices] AddAccountUseCase<AddAccountRequestDto> useCase,
        [FromServices] IValidator<AddAccountRequestDto> validator,
        [FromBody] AddAccountRequestDto account
        )
     {
-        if (account == null)
-        {
-            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
-        }
+        var programContext = context.GetProgramContext();
 
-        var result = await validator.ValidateAsync(account);
-        if (!result.IsValid)
-        {
-            Error[] errors = result.Errors
-                .Select(f => new Error(f.ErrorCode, f.ErrorMessage))
-                .Distinct()
-                .ToArray();
-
-            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "Validation error"), errors));
-        }
-
-        var creationResult = await useCase.ExecuteAsync(account);
+        var creationResult = await useCase.ExecuteAsync(account, programContext.Id);
 
         if (creationResult.IsSuccess)
         {
@@ -59,22 +51,15 @@ public static class AccountApi
     }
 
     public static async Task<Results<Ok<int>, BadRequest<ApiErrorResponse>>> AddAddress(
+        HttpContext context,
        [FromServices] AddAddressUseCase<AddressModel> useCase,
        [FromBody] AddressModel address,
        [FromRoute] string accountId
        )
     {
-        if (address == null)
-        {
-            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));
-        }
+        var programContext = context.GetProgramContext();
 
-        if (string.IsNullOrEmpty(address.RawValue) && string.IsNullOrEmpty(address.Street) && string.IsNullOrEmpty(address.City) && string.IsNullOrEmpty(address.HouseNumber))
-        {
-            return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "Validation error"), [Errors.Address.Empty]));
-        }
-
-        var creationResult = await useCase.ExecuteAsync(address, accountId);
+        var creationResult = await useCase.ExecuteAsync(address, accountId, programContext.Id);
 
         if (creationResult.IsSuccess)
         {
@@ -84,9 +69,13 @@ public static class AccountApi
         return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
     }
 
-    public static async Task<Results<Ok<AccountViewModel>, NotFound>> GetAccountById([FromServices] GetAccountUseCase<AccountViewModel> useCase, [FromRoute] string accountId)
+    public static async Task<Results<Ok<AccountViewModel>, NotFound>> GetAccountById(
+        HttpContext context,
+        [FromServices] GetAccountUseCase<AccountViewModel> useCase, [FromRoute] string accountId)
     {
-        var account = await useCase.ExecuteAsync(accountId);
+        var programContext = context.GetProgramContext();
+
+        var account = await useCase.ExecuteAsync(accountId, programContext.Id);
 
         if (account.HasValue)
         {

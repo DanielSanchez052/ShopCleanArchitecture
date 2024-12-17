@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Shop.Application.Account.Specifications;
 using Shop.Application.Interfaces;
 using Shop.Application.Primitives.Result;
 using Shop.Application.ShopCart.Specifications;
@@ -24,7 +25,7 @@ public class CreateCartUseCase<Dto>
         _cartMapper = cartMapper;   
     }
 
-    public async Task<Result<string>> ExecuteAsync(Dto dto)
+    public async Task<Result<string>> ExecuteAsync(int programId,Dto dto)
     {
         if (dto is null) throw new ArgumentNullException(nameof(dto));
 
@@ -33,7 +34,8 @@ public class CreateCartUseCase<Dto>
             var cart = _cartMapper.ToEntity(dto);
             var accountGuid = cart.AccountGuid;
 
-            var account = await _accountRepository.GetByString(accountGuid);
+            var accountSpec = new GetAccountByIdSpecification(accountGuid, programId);
+            var account = await _accountRepository.GetEntityWithSpec(accountSpec);
 
             if (account.HasNoValue)
             {
@@ -41,7 +43,7 @@ public class CreateCartUseCase<Dto>
             }
 
             // TODO: Delete Expired Carts
-            var activeCartsSpec = new GetCartsExpiredSpec(cart.AccountGuid, 10);
+            var activeCartsSpec = new GetCartsExpiredSpec(cart.AccountGuid, programId, 10);
             await _repository.DeleteBySpecificationAsync(activeCartsSpec);
 
             await _dbContext.SaveChangesAsync();

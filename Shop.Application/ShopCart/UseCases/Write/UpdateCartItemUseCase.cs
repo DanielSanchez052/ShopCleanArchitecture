@@ -28,14 +28,14 @@ public class UpdateCartItemUseCase<Dto>
         _logger = logger;
     }
 
-    public async Task<Result<string>> ExecuteAsync(string cartGuid, Dto dto)
+    public async Task<Result<string>> ExecuteAsync(string cartGuid, int programId, Dto dto)
     {
         if (dto is null) throw new ArgumentNullException(nameof(dto));
 
         try
         {
             var item = _mapper.ToEntity(dto);
-            var maybeCart = await _repository.GetEntityWithSpec(new GetCartByIdSpec(cartGuid));
+            var maybeCart = await _repository.GetEntityWithSpec(new GetCartByIdSpec(cartGuid, programId));
 
             if (maybeCart.HasNoValue)
             {
