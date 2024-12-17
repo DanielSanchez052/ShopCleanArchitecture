@@ -8,7 +8,7 @@ using Shop.Infrastructure.Customer.Presenter;
 using Shop.Infrastructure.Customer.Repository;
 using Shop.Infrastructure.Customer.ViewModel;
 
-namespace Shop.Api.AccountModule;
+namespace Shop.Api.Modules.AccountModule;
 
 public static class AccountModuleDI
 {

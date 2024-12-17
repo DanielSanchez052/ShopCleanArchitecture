@@ -4,7 +4,7 @@ using Shop.Application.Interfaces;
 using Shop.Infrastructure.Config;
 using Shop.Infrastructure.Config.Abstractions;
 
-namespace Shop.Api.ConfigModule.Extensions;
+namespace Shop.Api.Modules.ConfigModule.Extensions;
 
 public class TenantBuilder<T> where T : ProgramContext
 {

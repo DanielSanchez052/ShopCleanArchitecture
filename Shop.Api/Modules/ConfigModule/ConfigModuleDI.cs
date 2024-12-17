@@ -1,7 +1,7 @@
 ﻿using Shop.Application.Interfaces;
 using Shop.Infrastructure.Config.Repository;
 
-namespace Shop.Api.ConfigModule;
+namespace Shop.Api.Modules.ConfigModule;
 
 public static class ConfigModuleDI
 {

@@ -1,6 +1,5 @@
-﻿
-using Shop.Api.ConfigModule.Extensions;
-using Shop.Api.Models;
+﻿using Shop.Api.Models;
+using Shop.Api.Modules.ConfigModule.Extensions;
 using Shop.Application.Primitives;
 
 namespace Shop.Api.Filters;

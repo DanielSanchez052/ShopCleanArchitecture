@@ -8,7 +8,7 @@ using Shop.Infrastructure.Catalog.Presenter;
 using Shop.Infrastructure.Catalog.Repository;
 using Shop.Infrastructure.Catalog.ViewModel;
 
-namespace Shop.Api.CatalogModule;
+namespace Shop.Api.Modules.CatalogModule;
 
 public static class CatalogModuleDI
 {

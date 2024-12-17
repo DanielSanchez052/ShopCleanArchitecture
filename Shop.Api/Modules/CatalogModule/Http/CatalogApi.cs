@@ -1,4 +1,4 @@
-﻿namespace Shop.Api.CatalogModule.Http;
+﻿namespace Shop.Api.Modules.CatalogModule.Http;
 
 public static class CatalogApi
 {

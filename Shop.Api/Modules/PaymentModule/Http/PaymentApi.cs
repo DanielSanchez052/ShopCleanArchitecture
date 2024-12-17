@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Payment.UseCases.Read;
 using Shop.Infrastructure.Payment.ViewModel;
 
-namespace Shop.Api.PaymentModule.Http;
+namespace Shop.Api.Modules.PaymentModule.Http;
 
 public static class PaymentApi
 {
@@ -18,7 +18,7 @@ public static class PaymentApi
 
         return app;
     }
-    
+
     public static async Task<Results<Ok<IEnumerable<PaymentTypeViewModel>>, NotFound>> GetActivePaymentTypes(
     [FromServices] GetActivePaymentTypesUseCase<PaymentTypeViewModel> useCase)
     {

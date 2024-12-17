@@ -9,13 +9,13 @@ using Shop.Application.Catalog.UseCases.Write;
 using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Application.Primitives;
 using Shop.Api.Models;
-using Shop.Api.ConfigModule.Extensions;
+using Shop.Api.Modules.ConfigModule.Extensions;
 
-namespace Shop.Api.CatalogModule.Http;
+namespace Shop.Api.Modules.CatalogModule.Http;
 
 public static class ProductApi
 {
-    public static RouteGroupBuilder MapProductApiV1 (this RouteGroupBuilder group)
+    public static RouteGroupBuilder MapProductApiV1(this RouteGroupBuilder group)
     {
         var productApi = group.MapGroup("product").WithTags("Product");
 

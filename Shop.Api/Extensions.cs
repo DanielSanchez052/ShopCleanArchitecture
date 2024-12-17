@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shop.Api.AccountModule;
-using Shop.Api.CartModule;
-using Shop.Api.CatalogModule;
-using Shop.Api.ConfigModule;
-using Shop.Api.OrderingModule;
-using Shop.Api.PaymentModule;
+using Shop.Api.Modules.AccountModule;
+using Shop.Api.Modules.CartModule;
+using Shop.Api.Modules.CatalogModule;
+using Shop.Api.Modules.ConfigModule;
+using Shop.Api.Modules.OrderingModule;
+using Shop.Api.Modules.PaymentModule;
 using Shop.Application.Interfaces;
 using Shop.Application.Security.Services;
 using Shop.Infrastructure;

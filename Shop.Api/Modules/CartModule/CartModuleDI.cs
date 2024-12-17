@@ -8,7 +8,7 @@ using Shop.Infrastructure.ShopCart.Presenter;
 using Shop.Infrastructure.ShopCart.Repository;
 using Shop.Infrastructure.ShopCart.ViewModel;
 
-namespace Shop.Api.CartModule;
+namespace Shop.Api.Modules.CartModule;
 
 public static class CartModuleDI
 {

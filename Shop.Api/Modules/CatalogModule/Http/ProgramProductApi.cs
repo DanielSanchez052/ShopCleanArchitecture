@@ -10,9 +10,9 @@ using Shop.Infrastructure.Catalog.Dtos;
 using Shop.Application.Primitives;
 using Shop.Api.Models;
 using Shop.Api.Filters;
-using Shop.Api.ConfigModule.Extensions;
+using Shop.Api.Modules.ConfigModule.Extensions;
 
-namespace Shop.Api.CatalogModule.Http;
+namespace Shop.Api.Modules.CatalogModule.Http;
 
 public static class ProgramProductApi
 {
@@ -33,7 +33,7 @@ public static class ProgramProductApi
 
     public static async Task<Results<Ok<PagedList<ProgramProductViewModel>>, NotFound>> GetProgramProducts(
         HttpContext context,
-        [FromServices] GetProgramProductsByFilterUseCase<ProgramProductViewModel> useCase, 
+        [FromServices] GetProgramProductsByFilterUseCase<ProgramProductViewModel> useCase,
         [AsParameters] ProgramProductFilterParams filters)
     {
         var program = context.GetProgramContext();
@@ -62,7 +62,7 @@ public static class ProgramProductApi
 
         return TypedResults.NotFound();
     }
-    
+
     //TODO: Add programContext
     public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddProgramProduct(
        [FromServices] AddProductToProgramUseCase<AddProgramProductRequestDto> useCase,
@@ -96,11 +96,11 @@ public static class ProgramProductApi
         return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
     }
 
-     public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddProductReference(
-     [FromServices] AddProductReferenceUseCase<AddProductReferenceRequestDto> useCase,
-     [FromServices] IValidator<AddProductReferenceRequestDto> validator,
-     [FromBody] AddProductReferenceRequestDto product
-     )
+    public static async Task<Results<Ok<string>, BadRequest<ApiErrorResponse>>> AddProductReference(
+    [FromServices] AddProductReferenceUseCase<AddProductReferenceRequestDto> useCase,
+    [FromServices] IValidator<AddProductReferenceRequestDto> validator,
+    [FromBody] AddProductReferenceRequestDto product
+    )
     {
         if (product == null)
         {

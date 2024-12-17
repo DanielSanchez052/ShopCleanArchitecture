@@ -5,7 +5,7 @@ using Shop.Infrastructure.Payment.Presenter;
 using Shop.Infrastructure.Payment.Repository;
 using Shop.Infrastructure.Payment.ViewModel;
 
-namespace Shop.Api.PaymentModule;
+namespace Shop.Api.Modules.PaymentModule;
 
 public static class PaymentModuleDI
 {
@@ -13,11 +13,11 @@ public static class PaymentModuleDI
     {
 
         app.Services.AddScoped<IRepository<PaymentType>, PaymentTypeRepository>();
-        
-        
+
+
         app.Services.AddScoped<IPresenter<PaymentType, PaymentTypeViewModel>, PaymentTypePresenter>();
-        
-        
+
+
         app.Services.AddScoped<GetActivePaymentTypesUseCase<PaymentTypeViewModel>>();
 
 

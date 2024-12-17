@@ -2,7 +2,7 @@
 using Shop.Infrastructure.Config;
 using Shop.Infrastructure.Config.Abstractions;
 
-namespace Shop.Api.ConfigModule;
+namespace Shop.Api.Modules.ConfigModule;
 
 public class ProgramMiddleware<T> where T : ProgramContext
 {
@@ -19,17 +19,17 @@ public class ProgramMiddleware<T> where T : ProgramContext
         {
             var getProgram = context.RequestServices.GetService(typeof(GetProgramBySlugUseCase<T>)) as GetProgramBySlugUseCase<T>;
             var programResolution = context.RequestServices.GetService(typeof(IProgramResolutionStrategy)) as IProgramResolutionStrategy;
-        
+
             var identifier = await programResolution?.GetProgramIdentifierAsync();
-            if(identifier != null)
+            if (identifier != null)
             {
                 var programContext = await getProgram?.ExecuteAsync(identifier);
-                if(programContext != null)
+                if (programContext != null)
                     context.Items.Add(ConfigConstants.HttpContextProgramKey, programContext);
             }
         }
 
-        if(_next != null)
+        if (_next != null)
             await _next(context);
     }
 

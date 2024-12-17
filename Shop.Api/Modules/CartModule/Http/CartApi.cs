@@ -1,16 +1,16 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Shop.Api.ConfigModule.Extensions;
 using Shop.Api.Filters;
 using Shop.Api.Models;
+using Shop.Api.Modules.ConfigModule.Extensions;
 using Shop.Application.Primitives;
 using Shop.Application.ShopCart.UseCases.Read;
 using Shop.Application.ShopCart.UseCases.Write;
 using Shop.Infrastructure.ShopCart.Dtos;
 using Shop.Infrastructure.ShopCart.ViewModel;
 
-namespace Shop.Api.CartModule.Http;
+namespace Shop.Api.Modules.CartModule.Http;
 
 public static class CartApi
 {

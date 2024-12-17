@@ -1,6 +1,6 @@
 ﻿using Shop.Infrastructure.Config;
 
-namespace Shop.Api.ConfigModule.Extensions;
+namespace Shop.Api.Modules.ConfigModule.Extensions;
 
 public static class HttpContextExtensions
 {

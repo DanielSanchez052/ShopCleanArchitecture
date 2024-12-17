@@ -2,7 +2,7 @@
 using Shop.Infrastructure.Config;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Shop.Api.ConfigModule;
+namespace Shop.Api.Modules.ConfigModule;
 
 public class CustomProgramIdentifierParameter : IOperationFilter
 {

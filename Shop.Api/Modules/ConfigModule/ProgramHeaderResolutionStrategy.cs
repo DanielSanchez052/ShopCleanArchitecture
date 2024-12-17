@@ -1,7 +1,7 @@
 ﻿using Shop.Infrastructure.Config;
 using Shop.Infrastructure.Config.Abstractions;
 
-namespace Shop.Api.ConfigModule;
+namespace Shop.Api.Modules.ConfigModule;
 
 public class ProgramHeaderResolutionStrategy : IProgramResolutionStrategy
 {

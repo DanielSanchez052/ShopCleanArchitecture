@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Payment.UseCases.Read;
 using Shop.Infrastructure.Payment.ViewModel;
 
-namespace Shop.Api.OrderingModule.Http;
+namespace Shop.Api.Modules.OrderingModule.Http;
 
 public static class OrderingApi
 {
@@ -16,6 +16,6 @@ public static class OrderingApi
         return app;
     }
 
-    
+
 
 }

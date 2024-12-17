@@ -13,7 +13,7 @@ using Shop.Infrastructure.Payment.Presenter;
 using Shop.Infrastructure.Payment.Repository;
 using Shop.Infrastructure.Payment.ViewModel;
 
-namespace Shop.Api.OrderingModule;
+namespace Shop.Api.Modules.OrderingModule;
 
 public static class OrderingModuleDI
 {
