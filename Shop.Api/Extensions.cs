@@ -32,6 +32,7 @@ public static class Extensions
         app.AddOrderingModule();
         app.AddPaymentModule();
         app.AddConfigModule();
+
         app.Services.AddServices();
 
         return app;

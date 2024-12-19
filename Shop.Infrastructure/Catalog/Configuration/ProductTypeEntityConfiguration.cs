@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shop.Entities.Catalog;
 
@@ -21,8 +20,10 @@ public class ProductTypeEntityConfiguration : IEntityTypeConfiguration<ProductTy
             .IsRequired()
             .HasMaxLength(255);
 
-        builder.Property(x => x.Config)
-            .HasMaxLength(1000);
+        builder.OwnsOne(x => x.Config, builder =>
+        {
+            builder.ToJson();
+        });
 
         builder.Property(x => x.IsActive)
             .IsRequired();

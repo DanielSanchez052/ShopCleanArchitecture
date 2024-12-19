@@ -9,6 +9,17 @@ public class Order
     {
         Id = Ulid.NewUlid().ToString();
     }
+    protected Order(int? addressId, string accountGuid, int paymentTypeId, int statusId)
+    {
+        Id = Ulid.NewUlid().ToString();
+        AddressId = addressId;
+        CreateDate = DateTime.Now;
+        AproveDate = null;
+        UpdateDate = null;
+        AccountGuid = accountGuid;
+        PaymentTypeId = paymentTypeId;
+        StatusId = statusId;
+    }
 
     public string Id { get; private set; } = null!;
     public int? AddressId { get; private set; }
@@ -17,8 +28,8 @@ public class Order
     public DateTime? AproveDate { get; private set; }
     public DateTime? UpdateDate { get; private set; }
     public string AccountGuid { get; private set; } = null!;
-    public Account Account{ get; private set; } = null!;
-    public int PaymentTypeId { get; private set; } 
+    public Account Account { get; private set; } = null!;
+    public int PaymentTypeId { get; private set; }
     public PaymentType PaymentType { get; private set; } = null!;
     public int StatusId { get; private set; }
     public OrderStatus Status { get; private set; }
@@ -28,4 +39,22 @@ public class Order
 
     private readonly List<OrderChangeHistory> _changeHistory = new List<OrderChangeHistory>();
     public virtual IReadOnlyCollection<OrderChangeHistory> ChangeHistory => _changeHistory;
+
+    public static Order Create(int addressId, string accountGuid, int paymentTypeId)
+    {
+        var order = new Order(addressId, accountGuid, paymentTypeId, (int)OrderStatusEnum.Pending);
+
+        return order;
+    }
+
+    public void AddDetails(List<OrderDetail> details)
+    {
+        foreach(var detail in details)
+        {
+            detail.SetOrderId(Id);
+            _orderDetails.Add(detail);
+        }
+    }
+
+
 }

@@ -16,7 +16,7 @@ public class ProductType
 
     public int Id { get; set; }
     public string Name { get; set; } = null!;
-    public string? Config { get; set; }
+    public ProductTypeConfig? Config { get; set; }
     public bool IsActive { get; set; }
 
     private readonly List<Product> _products = new List<Product>();
