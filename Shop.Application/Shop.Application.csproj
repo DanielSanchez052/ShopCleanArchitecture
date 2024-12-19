@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Ordering\Specifications\" />
-    <Folder Include="Ordering\UseCases\" />
+    <Folder Include="Ordering\UseCases\Read\" />
   </ItemGroup>
 
 </Project>
