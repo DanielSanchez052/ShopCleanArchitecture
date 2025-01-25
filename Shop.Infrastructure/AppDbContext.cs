@@ -3,6 +3,7 @@ using Shop.Application.Interfaces;
 using Shop.Entities.Catalog;
 using Shop.Entities.Config;
 using Shop.Entities.Customer;
+using Shop.Entities.Delivery;
 using Shop.Entities.Digital;
 using Shop.Entities.Ordering;
 using Shop.Entities.Payment;
@@ -33,6 +34,7 @@ public class AppDbContext : DbContext, IDbContext
     public DbSet<OrderStatus> OrderStatus { get; set; }
     public DbSet<OrderDetailStatus> OrderDetailStatus { get; set; }
     public DbSet<PaymentType> PaymentTypes { get; set; }
+    public DbSet<DeliveryProvider> DeliveryProviders { get; set; } = null!;
 
     public new DbSet<TEntity> Set<TEntity>()
        where TEntity : class

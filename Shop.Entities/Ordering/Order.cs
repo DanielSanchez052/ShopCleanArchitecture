@@ -1,4 +1,5 @@
 ﻿using Shop.Entities.Customer;
+using Shop.Entities.Ordering.Enum;
 using Shop.Entities.Payment;
 
 namespace Shop.Entities.Ordering;

@@ -1,4 +1,5 @@
 ﻿using Shop.Entities.Config;
+using Shop.Entities.Delivery;
 
 namespace Shop.Entities.Catalog;
 
@@ -50,6 +51,8 @@ public class ProgramProduct
     public int? PointValue { get; set; }
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
+    public int? DeliveryProviderId { get; set; }
+    public DeliveryProvider? DeliveryProvider { get; set; } = null!;
     public DateTime CreateDate { get; set; }
     public bool IsActive { get; set; }
     public decimal GetPrice() => BasePrice+(BasePrice*Iva);

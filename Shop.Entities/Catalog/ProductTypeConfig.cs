@@ -2,7 +2,7 @@
 
 public class ProductTypeConfig
 {
-    public bool? UseDigitalCodes { get; set; }
     public bool? SendMail { get; set; }
-        
+    public bool UseReferenceInventory { get; set; }
 }
+

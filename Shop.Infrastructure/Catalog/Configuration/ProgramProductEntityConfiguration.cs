@@ -33,6 +33,10 @@ public class ProgramProductEntityConfiguration : IEntityTypeConfiguration<Progra
             .HasForeignKey(x => x.ProgramId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        builder.HasOne(x => x.DeliveryProvider)
+            .WithMany(x => x.ProgramProducts)
+            .HasForeignKey(x => x.DeliveryProviderId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(a => a.Name)
             .IsRequired()

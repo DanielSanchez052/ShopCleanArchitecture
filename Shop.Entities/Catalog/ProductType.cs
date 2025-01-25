@@ -2,7 +2,7 @@
 
 public class ProductType
 {
-    public ProductType(int id, string name, string? config, bool isActive)
+    public ProductType(int id, string name, ProductTypeConfig? config, bool isActive)
     {
         Id = id;
         Name = name;
