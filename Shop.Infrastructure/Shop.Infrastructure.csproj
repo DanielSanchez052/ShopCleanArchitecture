@@ -19,9 +19,6 @@
   <ItemGroup>
     <Folder Include="Config\Dtos\" />
     <Folder Include="Config\ViewModels\" />
-    <Folder Include="Ordering\Presenter\" />
-    <Folder Include="Ordering\Repository\" />
-    <Folder Include="Ordering\ViewModel\" />
   </ItemGroup>
 
 </Project>

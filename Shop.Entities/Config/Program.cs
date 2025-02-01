@@ -40,4 +40,9 @@ public class Program
     private readonly List<Account> _accounts = new List<Account>();
     public virtual IReadOnlyCollection<Account> Accounts => _accounts;
 
+    public override string ToString()
+    {
+        return Name;
+    }
+
 }

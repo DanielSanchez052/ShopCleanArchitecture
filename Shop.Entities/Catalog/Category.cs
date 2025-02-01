@@ -1,4 +1,5 @@
 ﻿using Shop.Entities.Config;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shop.Entities.Catalog;
 
@@ -30,13 +31,15 @@ public class Category
     public bool IsActive { get; set; }
 
     private readonly List<Category> _childCategories = new List<Category>();
+    [Display(AutoGenerateField = false)]
     public virtual IReadOnlyCollection<Category> ChildCategories => _childCategories;
 
     private readonly List<Product> _products = new List<Product>();
+    [Display(AutoGenerateField = false)]
     public virtual IReadOnlyCollection<Product> Products => _products;
 
     private readonly List<ProgramProduct> _programProducts = new List<ProgramProduct>();
-
+    [Display(AutoGenerateField = false)]
     public virtual IReadOnlyCollection<ProgramProduct> ProgramProducts => _programProducts;
 
 }

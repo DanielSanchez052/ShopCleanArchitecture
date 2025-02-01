@@ -53,7 +53,7 @@ public static class ProductApi
          [FromServices] IValidator<AddProductRequestDto> validator,
          [FromBody] AddProductRequestDto product
      )
-    {
+    {   
         if (product == null)
         {
             return TypedResults.BadRequest(new ApiErrorResponse(new Error("General", "body cannot be null"), null));

@@ -8,6 +8,6 @@ public class OrderMapper : IMapper<OrderDto, Order>
 {
     public Order ToEntity(OrderDto dto)
     {
-        return Order.Create(dto.AddressId, dto.AccountGuid, dto.PaymentId);
+        return Order.Create(dto.AddressId.Value, dto.AccountGuid, dto.PaymentId);
     }
 }

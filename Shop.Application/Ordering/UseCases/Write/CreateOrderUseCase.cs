@@ -55,9 +55,17 @@ public class CreateOrderUseCase<TDto>
              
             entity.AddDetails(details);
 
+            await _repository.AddAsync(entity);
 
+            _cartRepository.Delete(cart);
+
+            var rowsSaved = await _context.SaveChangesAsync();
             
+            if (rowsSaved == 0) 
+                return Result.Failure<string>(Errors.Order.CouldNotSave);
+
             return Result.Success<string>(entity.Id);
+
         }catch(Exception ex) {
             _logger.LogError(string.Format("{0} : {1}", ex.Message, ex.InnerException?.Message));
             return Result.Failure<string>(Errors.Order.CouldNotSave);

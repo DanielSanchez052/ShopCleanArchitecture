@@ -1,5 +1,7 @@
+using DotNetEd.CoreAdmin;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Shop.Api;
@@ -24,6 +26,8 @@ builder.Services.AddMultiTenancy()
     .WithStore<ProgramContextPresenter>();
 
 builder.AddInfrastructure();
+
+builder.Services.AddCoreAdmin();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -61,6 +65,8 @@ if (args.Contains("/seed"))
 
     return;
 }
+app.UseStaticFiles();
+app.MapDefaultControllerRoute();
 
 app.UseMultiTenancy();
 
@@ -69,6 +75,7 @@ app.MapAccountApiV1();
 app.MapCartApiV1();
 app.MapOrderingApiV1();
 app.MapPaymentApiV1();
+
 
 await app.RunAsync();
 
