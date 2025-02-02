@@ -36,5 +36,7 @@ public class PaymentRulesEntityConfiguration : IEntityTypeConfiguration<PaymentR
         builder.HasOne(x => x.Program)
             .WithMany(x => x.PaymentRules)
             .HasForeignKey(x => x.ProgramId);
+
+        builder.HasQueryFilter(x => x.Factor > 0);
     }
 }

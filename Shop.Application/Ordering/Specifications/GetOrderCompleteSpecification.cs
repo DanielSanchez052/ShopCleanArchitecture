@@ -12,7 +12,10 @@ public class GetOrderCompleteByFilterSpecification : BaseSpecification<Order>
     {
         AddInclude(a => a.Account);
         AddInclude(s => s.Status);
-
+        AddInclude(p => p.PaymentType);
+        AddInclude(o => o.OrderDetails);
+        AddInclude("OrderDetails.ProgramProductReference.ProgramProduct.ProductImages");
+        WithTracking = false;
         ApplyPaging(filters.PageSize * ( filters.PageIndex-1 ), filters.PageSize);
     }
 }

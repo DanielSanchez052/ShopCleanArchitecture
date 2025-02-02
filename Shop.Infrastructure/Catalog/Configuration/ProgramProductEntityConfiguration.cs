@@ -93,5 +93,9 @@ public class ProgramProductEntityConfiguration : IEntityTypeConfiguration<Progra
 
         builder.Property(a => a.IsActive)
             .IsRequired();
+
+        builder.HasQueryFilter(p => p.BasePrice > 0);
+
+
     }
 }

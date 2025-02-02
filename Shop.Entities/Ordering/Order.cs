@@ -48,6 +48,11 @@ public class Order
         return order;
     }
 
+    public decimal GetTotal()
+    {
+        return _orderDetails.Sum(x => (x.Quantity * x.UnitPrice)-x.Discount);
+    }
+
     public void AddDetails(List<OrderDetail> details)
     {
         foreach(var detail in details)

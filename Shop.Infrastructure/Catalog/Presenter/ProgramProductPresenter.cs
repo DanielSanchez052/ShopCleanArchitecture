@@ -50,7 +50,7 @@ public class ProgramProductPresenter : IPresenter<ProgramProduct, ProgramProduct
             product.PointValue = rule.GetPointValue(entity.GetPrice());
         }
 
-        if(product.Price <= 0 || product.PointValue <= 0) return null;
+        //if(product.Price <= 0 || product.PointValue <= 0) return null;
 
         return product;
     }
