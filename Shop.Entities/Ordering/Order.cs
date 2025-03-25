@@ -68,4 +68,15 @@ public class Order
             _orderDetails.Add(detail);
         }
     }
+
+    public void Approve()
+    {
+        StatusId = (int)OrderStatusEnum.Approved;
+        AproveDate = DateTime.Now;
+    }
+
+    public bool CanApprove()
+    {
+        return StatusId == (int)OrderStatusEnum.Pending && AproveDate == null;
+    }
 }

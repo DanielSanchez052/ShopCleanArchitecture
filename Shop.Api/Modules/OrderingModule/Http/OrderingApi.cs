@@ -26,6 +26,7 @@ public static class OrderingApi
             .WithTags("Order");
 
         orderingApi.MapPost("/", CreateOrder).AddEndpointFilter<RequireProgramFilter>();
+        orderingApi.MapPost("/approve/{orderNumber}", ApproveOrder).AddEndpointFilter<RequireProgramFilter>();
         orderingApi.MapGet("/history", GetOrderHistory).AddEndpointFilter<RequireProgramFilter>();
 
 
@@ -45,6 +46,24 @@ public static class OrderingApi
         if (creationResult.IsSuccess)
         {
             return TypedResults.Ok(creationResult.Value);
+        }
+
+        return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));
+    }
+
+    public static async Task<Results<Ok, BadRequest<ApiErrorResponse>>> ApproveOrder(
+        HttpContext context,
+        [FromServices] ApproveOrderUseCase useCase,
+        [FromServices] IValidator<OrderDto> validator,
+        [FromRoute] string orderNumber)
+    {
+        var program = context.GetProgramContext();
+
+        var creationResult = await useCase.ExecuteAsync(orderNumber, program?.Id ?? 0);
+
+        if (creationResult.IsSuccess)
+        {
+            return TypedResults.Ok();
         }
 
         return TypedResults.BadRequest(new ApiErrorResponse(creationResult.Error, creationResult.Errors));

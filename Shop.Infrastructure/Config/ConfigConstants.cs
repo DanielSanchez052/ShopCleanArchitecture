@@ -2,6 +2,6 @@
 
 public static class ConfigConstants
 {
-    public const string ProgramIdentifierHeaderName = "x-program";
+    public const string ProgramIdentifierHeaderName = "Program";
     public const string HttpContextProgramKey = "Program";
 }
