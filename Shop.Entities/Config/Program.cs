@@ -1,5 +1,6 @@
 ﻿using Shop.Entities.Catalog;
 using Shop.Entities.Customer;
+using Shop.Entities.Ordering;
 using Shop.Entities.Payment;
 
 namespace Shop.Entities.Config;
@@ -32,6 +33,9 @@ public class Program
 
     private readonly List<ProgramProduct> _programProducts = new List<ProgramProduct>();
     public virtual IReadOnlyCollection<ProgramProduct> ProgramProducts => _programProducts;
+
+    private readonly List<Order> _orders = new List<Order>();
+    public virtual IReadOnlyCollection<Order> Orders => _orders;
 
     private readonly List<Category> _categories = new List<Category>();
     public virtual IReadOnlyCollection<Category> Categories => _categories;

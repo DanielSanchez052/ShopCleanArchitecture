@@ -1,4 +1,5 @@
-﻿using Shop.Entities.Customer;
+﻿using Shop.Entities.Config;
+using Shop.Entities.Customer;
 using Shop.Entities.Ordering.Enum;
 using Shop.Entities.Payment;
 
@@ -34,6 +35,8 @@ public class Order
     public PaymentType PaymentType { get; private set; } = null!;
     public int StatusId { get; private set; }
     public OrderStatus Status { get; private set; }
+    public int ProgramId { get; private set; }
+    public Program Program { get; private set; }
 
     private readonly List<OrderDetail> _orderDetails = new List<OrderDetail>();
     public virtual IReadOnlyCollection<OrderDetail> OrderDetails => _orderDetails;
@@ -46,6 +49,11 @@ public class Order
         var order = new Order(addressId, accountGuid, paymentTypeId, (int)OrderStatusEnum.Pending);
 
         return order;
+    }
+
+    public void AssignToProgram(int programId)
+    {
+        ProgramId = programId;
     }
 
     public decimal GetTotal()

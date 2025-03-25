@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure;
 
@@ -11,9 +12,11 @@ using Shop.Infrastructure;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325002330_AddProgramToOrder")]
+    partial class AddProgramToOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -564,7 +567,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("ProgramId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("StatusId")
@@ -1054,10 +1056,8 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Shop.Entities.Config.Program", "Program")
-                        .WithMany("Orders")
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ProgramId");
 
                     b.HasOne("Shop.Entities.Ordering.OrderStatus", "Status")
                         .WithMany("Orders")
@@ -1201,8 +1201,6 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("Accounts");
 
                     b.Navigation("Categories");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("PaymentRules");
 

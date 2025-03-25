@@ -50,5 +50,12 @@ public class OrderEntityConfiguration : IEntityTypeConfiguration<Order>
         builder.HasOne(x => x.Status)
             .WithMany(x => x.Orders)
             .HasForeignKey(x => x.StatusId);
+
+        builder.Property(x => x.ProgramId)
+            .IsRequired();
+
+        builder.HasOne(x => x.Program)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.ProgramId);
     }
 }

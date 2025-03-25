@@ -38,6 +38,7 @@ public class CreateOrderUseCase<TDto>
         {
             var errors = new List<Error>();
             var entity = _mapper.ToEntity(dto);
+            entity.AssignToProgram(programId);
 
             var cart = await GetActiveCartAsync(entity.AccountGuid, programId, errors);
             if (cart == null)
