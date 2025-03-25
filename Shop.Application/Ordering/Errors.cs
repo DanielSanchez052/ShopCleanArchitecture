@@ -11,6 +11,7 @@ public partial class Errors
         public static Error CartNotFound => new Error("Order.CartNotFound", "Cart not found.");
         public static Error CartIsEmpty => new Error("Order.CartIsEmpty", "cart is empty.");
         public static Error CouldNotApprove => new Error("Order.CouldNotApprove", "Could not approve order.");
+        public static Error CouldNotCancel => new Error("Order.CouldNotCancel", "Could not cancel order.");
 
     }
 }

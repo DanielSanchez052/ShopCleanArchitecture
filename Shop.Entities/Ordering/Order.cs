@@ -75,7 +75,17 @@ public class Order
         AproveDate = DateTime.Now;
     }
 
+    public void Cancel()
+    {
+        StatusId = (int)OrderStatusEnum.Canceled;
+    }
+
     public bool CanApprove()
+    {
+        return StatusId == (int)OrderStatusEnum.Pending && AproveDate == null;
+    }
+
+    public bool CanCancel()
     {
         return StatusId == (int)OrderStatusEnum.Pending && AproveDate == null;
     }

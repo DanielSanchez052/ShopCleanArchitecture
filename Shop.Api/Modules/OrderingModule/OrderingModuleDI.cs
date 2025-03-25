@@ -50,6 +50,7 @@ public static class OrderingModuleDI
         services.AddScoped<CreateOrderUseCase<OrderDto>>();
         services.AddScoped<GetOrderHistoryUseCase<OrderCompleteViewModel>>();
         services.AddScoped<ApproveOrderUseCase>();
+        services.AddScoped<CancelOrderUseCase>();
         return services;
     }
 }
