@@ -9,4 +9,5 @@ public class CartitemRepository : BaseRepository<CartItem>, IRepository<CartItem
     public CartitemRepository(IDbContext dbContext) : base(dbContext)
     {
     }
+
 }

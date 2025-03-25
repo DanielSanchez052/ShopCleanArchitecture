@@ -77,4 +77,6 @@ public class ProgramProduct
     {
         _productImages.Add(image);
     }
-}
+
+    public ProductTypeConfig GetProductTypeConfig() => Product.GetProductTypeConfig();
+ }

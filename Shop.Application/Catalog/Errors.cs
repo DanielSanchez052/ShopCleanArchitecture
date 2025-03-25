@@ -24,5 +24,6 @@ public partial class Errors
     public static class ProductReference
     {
         public static Error CouldNotSave = new Error("ProductReference.CouldNotSave", "Product referencecould not be saved.");
+        public static Error NonInventoryReference(string reference) => new Error("ProductReference.NonInventoryReference", string.Format("Product reference {0} is not inventory.", reference));
     }
 }

@@ -68,7 +68,7 @@ public class UpdateCartItemUseCase<Dto>
                 return Result.Failure<string>(Errors.Cart.QuantityInvalid);
             }
 
-            if (currentItem?.Quantity > 0 && currentItem?.Quantity > maybeRefence.Value?.Available)
+            if (maybeRefence.Value.CheckAvailableInventory(currentItem.Quantity))
             {
                 return Result.Failure<string>(Errors.Cart.ReferenceNotInventory);
             }

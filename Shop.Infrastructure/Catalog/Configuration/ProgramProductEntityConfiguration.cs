@@ -38,6 +38,9 @@ public class ProgramProductEntityConfiguration : IEntityTypeConfiguration<Progra
             .HasForeignKey(x => x.DeliveryProviderId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        builder.Property(a => a.DeliveryProviderId)
+         .IsRequired();
+
         builder.Property(a => a.Name)
             .IsRequired()
             .HasMaxLength(255);

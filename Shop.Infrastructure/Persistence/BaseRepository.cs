@@ -28,6 +28,11 @@ public abstract class BaseRepository<T> :
         DbContext.Set<T>().Remove(entity);
     }
 
+    public void DeleteRange(IEnumerable<T> entities)
+    {
+        DbContext.Set<T>().RemoveRange(entities);
+    }
+
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await DbContext.Set<T>().ToListAsync();

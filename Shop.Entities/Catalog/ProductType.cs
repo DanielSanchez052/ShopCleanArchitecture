@@ -1,4 +1,6 @@
-﻿namespace Shop.Entities.Catalog;
+﻿using System.Text.Json;
+
+namespace Shop.Entities.Catalog;
 
 public class ProductType
 {

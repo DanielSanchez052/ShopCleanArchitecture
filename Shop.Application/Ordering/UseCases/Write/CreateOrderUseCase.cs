@@ -5,13 +5,15 @@ using Shop.Application.Primitives.Result;
 using Shop.Application.ShopCart.Specifications;
 using Shop.Entities.Ordering;
 using Shop.Entities.ShopCart;
+using CartErrors = Shop.Application.ShopCart.Errors;
+using CatalogErrors = Shop.Application.Catalog.Errors;
 
 namespace Shop.Application.Ordering.UseCases.Write;
 
-public class CreateOrderUseCase<TDto> 
+public class CreateOrderUseCase<TDto>
 {
     private readonly IRepository<Order> _repository;
-    private readonly IRepository<Cart> _cartRepository; // <Cart>
+    private readonly IRepository<Cart> _cartRepository;
     private readonly IMapper<TDto, Order> _mapper;
     private readonly IMapper<CartItem, OrderDetail> _mapperDetail;
     private readonly IDbContext _context;
@@ -29,7 +31,7 @@ public class CreateOrderUseCase<TDto>
 
     public async Task<Result<string>> ExecuteAsync(TDto dto, int programId)
     {
-        if(dto == null)
+        if (dto == null)
             throw new ArgumentNullException(nameof(dto));
 
         try
@@ -37,39 +39,54 @@ public class CreateOrderUseCase<TDto>
             var errors = new List<Error>();
             var entity = _mapper.ToEntity(dto);
 
-            var specification  = new GetCartsActiveSpec(entity.AccountGuid, programId);
-            var cartMaybe = await _cartRepository.GetEntityWithSpec(specification);
-
-            if (cartMaybe.HasNoValue)
-                errors.Add(Errors.Order.CartNotFound);
-            
-            if(cartMaybe.HasValue && cartMaybe.Value?.CartItems.Count == 0)
-                errors.Add(Errors.Order.CartIsEmpty);
-
-            if(errors.Count > 0)
+            var cart = await GetActiveCartAsync(entity.AccountGuid, programId, errors);
+            if (cart == null)
                 return Result.Failure<string>(new Error("General", "validation error"), errors.ToArray());
 
-            var cart = cartMaybe.Value;
-            
-            var details = cart?.CartItems.Select(x => _mapperDetail.ToEntity(x)).ToList();
-             
+            var invalidItems = cart.GetCartItemsWithInventoryInvalid();
+            if (invalidItems != null && invalidItems.Count > 0)
+            {
+                errors.AddRange(invalidItems.Select(x => CatalogErrors.ProductReference.NonInventoryReference(x.Reference.Name)));
+                return Result.Failure<string>(new Error("General", "validation error"), errors.ToArray());
+            }
+
+            var details = cart.CartItems.Select(x => _mapperDetail.ToEntity(x)).ToList();
             entity.AddDetails(details);
 
             await _repository.AddAsync(entity);
-
             _cartRepository.Delete(cart);
 
             var rowsSaved = await _context.SaveChangesAsync();
-            
-            if (rowsSaved == 0) 
+            if (rowsSaved == 0)
                 return Result.Failure<string>(Errors.Order.CouldNotSave);
 
             return Result.Success<string>(entity.Id);
-
-        }catch(Exception ex) {
-            _logger.LogError(string.Format("{0} : {1}", ex.Message, ex.InnerException?.Message));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating order");
             return Result.Failure<string>(Errors.Order.CouldNotSave);
         }
-      
+    }
+
+    private async Task<Cart?> GetActiveCartAsync(string accountGuid, int programId, List<Error> errors)
+    {
+        var specification = new GetCartsActiveSpec(accountGuid, programId);
+        var cartMaybe = await _cartRepository.GetEntityWithSpec(specification);
+
+        if (cartMaybe.HasNoValue)
+        {
+            errors.Add(Errors.Order.CartNotFound);
+            return null;
+        }
+
+        var cart = cartMaybe.Value;
+        if (cart.CartItems.Count == 0)
+        {
+            errors.Add(Errors.Order.CartIsEmpty);
+            return null;
+        }
+
+        return cart;
     }
 }

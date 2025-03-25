@@ -1,4 +1,5 @@
 ﻿using Shop.Entities.Customer;
+using System.Xml.Linq;
 
 namespace Shop.Entities.ShopCart;
 
@@ -47,4 +48,19 @@ public class Cart
     {
         _cartItems.Clear();
     }
+    public List<CartItem>? GetCartItemsWithInventoryInvalid()
+    {
+        var invalidItems = new List<CartItem>();
+
+        if(CartItems == null || CartItems.Count == 0 || CartItems.Any(x => x.Reference == null)) return null;
+
+        invalidItems = CartItems.Where(x => x.Reference?.CheckAvailableInventory(x.Quantity) == true).ToList();
+
+        return invalidItems;
+    }
+
+    public bool IsExpired(int expirationDays) => CreateDate.AddDays(expirationDays) < DateTime.Now;
+
+
+
 }

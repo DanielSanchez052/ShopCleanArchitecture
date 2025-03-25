@@ -1,4 +1,6 @@
-﻿namespace Shop.Entities.Catalog;
+﻿using System.Text.Json;
+
+namespace Shop.Entities.Catalog;
 
 public class Product
 {
@@ -44,4 +46,15 @@ public class Product
     private readonly List<ProgramProduct> _programProducts = new List<ProgramProduct>();
 
     public virtual IReadOnlyCollection<ProgramProduct> ProgramProducts => _programProducts;
+
+    public ProductTypeConfig GetProductTypeConfig()
+    {
+        var config = new ProductTypeConfig();
+
+        if(ProductType != null){
+            config = ProductType.Config;
+        }
+
+        return config;
+    }
 }

@@ -41,7 +41,6 @@ public class OrderDetail
         return detail;
     }
 
-
     public void SetOrderId(string orderId)
     {
         OrderId = orderId;

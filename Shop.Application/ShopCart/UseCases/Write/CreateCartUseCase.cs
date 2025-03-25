@@ -31,6 +31,7 @@ public class CreateCartUseCase<Dto>
 
         try
         {
+            int expirationDays = 10;
             var cart = _cartMapper.ToEntity(dto);
             var accountGuid = cart.AccountGuid;
 
@@ -42,20 +43,32 @@ public class CreateCartUseCase<Dto>
                 return Result.Failure<string>(Errors.Cart.AccountNotFound);
             }
 
-            // TODO: Delete Expired Carts
-            var activeCartsSpec = new GetCartsExpiredSpec(cart.AccountGuid, programId, 10);
-            await _repository.DeleteBySpecificationAsync(activeCartsSpec);
+            var accountCartsSpec = new GetCartsByAccountSpec(cart.AccountGuid);
 
-            await _dbContext.SaveChangesAsync();
+            var carts = await _repository.ListAsync(accountCartsSpec);
 
-            await _repository.AddAsync(cart);
-            var result = await _dbContext.SaveChangesAsync();
-            if (result > 0)
+            if (carts != null && carts.Count > 0)
             {
-                return Result.Success(cart.Guid);
-            }
+                var activeCart = carts.Where(c => !c.IsExpired(expirationDays)).OrderBy(c => c.CreateDate).FirstOrDefault();
 
-            return Result.Failure<string>(Errors.Cart.CouldNotSave);
+                var expiredCarts = carts.Where(c => c.Guid != activeCart.Guid).ToList();
+
+                cart = activeCart;
+
+                _repository.DeleteRange(expiredCarts);
+            }
+            else
+            {
+                await _repository.AddAsync(cart);
+
+                var result = await _dbContext.SaveChangesAsync();
+                if (result <= 0)
+                {
+                    return Result.Failure<string>(Errors.Cart.CouldNotSave);
+                }
+
+            }
+            return Result.Success(cart.Guid);
         }
         catch (Exception ex)
         {

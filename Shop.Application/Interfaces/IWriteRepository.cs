@@ -8,4 +8,5 @@ public interface IWriteRepository<T> where T : class
     void Update(T entity);
     void Delete(T entity);
     Task<int> DeleteBySpecificationAsync(ISpecification<T> spec);
+    void DeleteRange(IEnumerable<T> entities);
 }

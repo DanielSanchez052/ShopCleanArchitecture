@@ -37,4 +37,22 @@ public class ProgramProductReference
 
     private readonly List<CartItem> _items = new List<CartItem>();
     public virtual IReadOnlyCollection<CartItem> Items => _items;
+
+    public bool CheckAvailableInventory(int quantity)
+    {
+        var config = ProgramProduct.GetProductTypeConfig();
+        var available = 0;
+
+        if (config.UseReferenceInventory)
+        {
+            available = Available;
+        }
+        else if (config.UseDigitalInventory) { 
+            available = Codes.Where(c => c.Used == false).Count();
+        } 
+        
+        return quantity > 0 && quantity <= Available;
+    }
+
+
 }
